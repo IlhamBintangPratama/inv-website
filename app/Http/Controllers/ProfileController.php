@@ -5,21 +5,21 @@ namespace App\Http\Controllers;
 use App\User;
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 // use App\Requests\UpdatePasswordRequest;
 
 class ProfileController extends Controller
 {
     public function edit()
     {
-        $profil = User::select('id','name','username')->where('level', '=', 1)->first();
+        $profil = User::select('id','name','email')->where('id', '=', Auth::user()->id)->first();
         // dd($profil);
         return view('profil.profil', compact('profil'));
     }
     
     public function changePassword(Request $request){
-        // $qwe = Auth::user()->password;
-        // dd($qwe);
-        if (\Hash::check($request->get('current-password'), Auth::user()->password)) {
+        
+        if (!Hash::check($request->get('current-password'), Auth::user()->password)) {
             // The passwords matches
             return redirect()->back()->with("toast_error","Kata sandi Anda saat ini tidak cocok dengan kata sandi yang Anda berikan. Silakan coba lagi.");
         }
@@ -30,23 +30,38 @@ class ProfileController extends Controller
         }
 
         $validatedData = $request->validate([
-            'username' => 'required',
             'email' => 'required',
+            'name' => 'required',
+            // 'current-password' => 'required',
+            // 'new-password_confirmation' => 'required',
+            // 'new-password' => 'string|min:6|same:new-password_confirmation',
+        ]);
+
+        if($request->get('new-password')==null){
+        $profil = User::where('id', '=', Auth::user()->id)->first();
+        $profil->name = $request->get('name');
+        $profil->email = $request->get('email');
+        $profil->save();
+        }else{
+        $validatedData = $request->validate([
+            'email' => 'required',
+            'name' => 'required',
             'current-password' => 'required',
-            'new-password' => 'string|min:6|confirmed',
+            'new-password_confirmation' => 'required',
+            'new-password' => 'string|min:6|same:new-password_confirmation',
         ]);
         //Change Profile
-        $profil = User::where('id', '=', 1)->first();
-        $profil->name = $request->get('username');
-        $profil->username = $request->get('email');
+        $profil = User::where('id', '=', Auth::user()->id)->first();
+        $profil->name = $request->get('name');
+        $profil->email = $request->get('email');
         //Change Password
         $user = Auth::user();
-        $user->password = (\Hash::make($request->get('new-password')));
+        $user->password = Hash::make($request->get('new-password'));
         
         $user->save();
         $profil->save();
-
-        return redirect()->back()->with("toast_success","Password changed successfully !");
+        }
+        return redirect()->back()->with("toast_success","Data berhasil di ubah!");
 
     }
 }

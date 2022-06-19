@@ -10,10 +10,12 @@ class Out extends Model
         'id_brg', 
         'stoks_id',
         'id_bulan',
-        // 'pk_id',
+        'buyer',
         'jns_id', 
+        'hrg_jual',
         'jumlah',
         'tanggal',
+        'total',
         'kategori'
     ];
     public function stok() {

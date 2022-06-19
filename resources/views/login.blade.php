@@ -79,7 +79,7 @@
       </div>
     </div>
     <!-- Page content -->
-    <div class="container mt--8 pb-5">
+    <div class="container mt--9 pb-5">
       <div class="row justify-content-center">
         <div class="col-lg-5 col-md-7">
           <div class="card bg-secondary border-0 mb-0">
@@ -95,10 +95,10 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="ni ni-email-83"></i></span>
                     </div>
-                    <input class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" placeholder="Username" type="name" name="username" required autofocus>
-                    @if ($errors->has('username'))
+                    <input class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" placeholder="Email Address" type="name" name="email">
+                    @if ($errors->has('email'))
                       <span class="invalid-feedback" role="alert">
-                          <strong>{{ $errors->first('username') }}</strong>
+                          <strong>{{ $errors->first('email') }}</strong>
                       </span>
                     @endif
                   </div>
@@ -108,7 +108,7 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
                     </div>
-                    <input class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="Password" type="password" name="password" required>
+                    <input class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="Password" type="password" name="password">
                     @if ($errors->has('password'))
                       <span class="invalid-feedback" role="alert">
                           <strong>{{ $errors->first('password') }}</strong>
@@ -137,6 +137,8 @@
       </div>
     </div>
   </div>
+  @include('sweetalert::alert')
+
   <!-- Footer -->
   <footer class="py-5" id="footer-main">
     <div class="container">

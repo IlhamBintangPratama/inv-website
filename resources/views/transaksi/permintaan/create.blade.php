@@ -3,7 +3,75 @@
     @section ('content')
     <div class="main-content" id="panel">
         <!-- Topnav -->
-        @include ('admin-layouts.top')
+    <nav class="navbar navbar-top navbar-expand navbar-dark bg-primary border-bottom">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <!-- Search form -->
+            <form action="{{ url('search-outstok')}}" class="navbar-search navbar-search-light form-inline mr-sm-3" id="navbar-search-main" method="GET">
+                <div class="form-group mb-0">
+                <div class="input-group input-group-alternative input-group-merge">
+                    <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                    </div>
+                    <input name="keyword" class="form-control" placeholder="Cari berdasarkan nama" type="text">
+                </div>
+                </div>
+                {{-- <button type="submit" class="btn btn-primary mb-2" data-target="#navbar-search-main" aria-label="Close">
+                
+                </button> --}}
+            </form>
+            <!-- Navbar links -->
+            <ul class="navbar-nav align-items-center  ml-md-auto ">
+                <li class="nav-item d-xl-none">
+                <!-- Sidenav toggler -->
+                <div class="pr-3 sidenav-toggler sidenav-toggler-dark" data-action="sidenav-pin" data-target="#sidenav-main">
+                    <div class="sidenav-toggler-inner">
+                    <i class="sidenav-toggler-line"></i>
+                    <i class="sidenav-toggler-line"></i>
+                    <i class="sidenav-toggler-line"></i>
+                    </div>
+                </div>
+                </li>
+                <li class="nav-item d-sm-none">
+                <a class="nav-link" href="#" data-action="search-show" data-target="#navbar-search-main">
+                    <i class="ni ni-zoom-split-in"></i>
+                </a>
+                </li>
+                
+                
+            </ul>
+            <ul class="navbar-nav align-items-center  ml-auto ml-md-0 ">
+                <li class="nav-item dropdown">
+                <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <div class="media align-items-center">
+                    <span class="avatar avatar-sm rounded-circle">
+                        <img alt="Image placeholder" src="../../assets/img/theme/team-4.jpg">
+                    </span>
+                    <div class="media-body  ml-2  d-none d-lg-block">
+                        <span class="mb-0 text-sm  font-weight-bold">{{$profil->name}}</span>
+                    </div>
+                    </div>
+                </a>
+                <div class="dropdown-menu  dropdown-menu-right ">
+                    <div class="dropdown-header noti-title">
+                    <h6 class="text-overflow m-0">Welcome!</h6>
+                    </div>
+                    <a href="{{ url('profile_adm')}}" class="dropdown-item">
+                    <i class="ni ni-single-02"></i>
+                    <span>My profile</span>
+                    </a>
+                    
+                    <div class="dropdown-divider"></div>
+                    <a href="{{ url('logout')}}" class="dropdown-item">
+                    <i class="ni ni-user-run"></i>
+                    <span>Logout</span>
+                    </a>
+                </div>
+                </li>
+            </ul>
+            </div>
+        </div>
+        </nav>
     <div id="page-wrapper" class="container-fluid mt-4">
 
         <div class="row">
@@ -76,6 +144,7 @@
                                                         <td>  
                                                             <a href="#" class="btn btn-primary" id="select"
                                                                 data-id="{{$eoq->id}}"
+                                                                data-status="{{$eoq->status}}"
                                                                 data-nama="{{$eoq->items_id}}"
                                                                 data-nama2="{{$eoq->typ_items->nm_brg}}"
                                                                 data-jenis="{{$eoq->types_id}}"
@@ -88,12 +157,20 @@
                                                     @endforeach
                                                     </tbody>
                                                 </table>
+                                                <div class="card-footer py-4">
+                                                    <nav aria-label="...">
+                                                        <ul class="pagination justify-content-end mb-0">
+                                                            {{$eoqresult->links()}}
+                                                        </ul>
+                                                    </nav>
+                                                </div>
                                                 </div>
                                             </div>
                                             
                                         </div>
                                         </div>
-                                    </div>                        
+                                    </div>
+                                    
                                     <script>
                                         $(document).ready(function(){
                                         $(document).on('click', '#select', function(){
@@ -107,15 +184,18 @@
                                             var eoq = $(this).data('jumlah');
                                             var frekuensi = $(this).data('frekuensi');
                                             var waktu = $(this).data('waktu');
+                                            var status = $(this).data('status');
                                             $('#id_eoq').val(id_eoq);
                                             $('#nm_brg').html(nm_brg).show();
                                             $('#input-barang').html(jns_brg).show();
                                             $('#jumlah').val(eoq);
                                             $('#frekuensi').val(frekuensi);
                                             $('#waktu_pemesanan').val(waktu);
+                                            $('#status').val(status);
                                             $('#exampleModal').modal('hide');
                                         })
                                     })
+                                    
                                     </script>
                             <style>
                                 .colm-lg-6
@@ -136,7 +216,7 @@
                                 }
                                 .con-md-2
                                 {
-                                    max-width: 140%;
+                                    max-width: 98%;
                                     flex: 140%;
                                     margin-right: 5%;
                                 }
@@ -144,7 +224,8 @@
                             <div class="wd-2">
                                 <div class="form-group">
                                     <label for="nm_brg">Nama Barang</label>
-                                    <input class="form-control"  name="jumlah" id="id_eoq" style="width: 180%" type="text" hidden>
+                                    <input class="form-control"  name="id_eoq" id="id_eoq" style="width: 180%" type="text" hidden>
+                                    <input class="form-control"  name="status" id="status" style="width: 180%" type="number" hidden>
                                     <select name="nm_brg" id="nm_brg" class="form-control" onchange="getData(this);" style="width: 180%">
                                         <option value="">- pilih -</option>
                                         @foreach ($stokss as $stoks)
@@ -152,6 +233,7 @@
                                             @endforeach
                                     </select>
                                 </div>
+                                
                                 <div class="form-group">
                                     <label for="jns_brg">Jenis</label>
                                     <select class='form-control' name='jns_brg' required='required' id='input-barang'
@@ -160,18 +242,18 @@
                                 </div>
                             
                                 <div class="form-group">
-                                    <label for="jumlah">Jumlah</label>
-                                    <input class="form-control"  name="jumlah" id="jumlah" style="width: 180%" type="number" autocomplete="off" multiple>
+                                    <label for="jumlah">Jumlah (Kg)</label>
+                                    <input class="form-control"  name="jumlah" id="jumlah" style="width: 180%" type="decimal" onkeypress="return hanyaAngka(event)" autocomplete="off" multiple required>
                                     {{-- <div id="awal_stoks"></div> --}}
                                 </div>
                                 <div class="form-group">
                                     <label for="jumlah">Frekuensi Pemesanan (x)</label>
-                                    <input class="form-control"  name="frekuensi" id="frekuensi" style="width: 180%" type="number" autocomplete="off" multiple>
+                                    <input class="form-control"  name="frekuensi" id="frekuensi" style="width: 180%" type="number" onkeypress="return hanyaAngka(event)" autocomplete="off" multiple required>
                                     {{-- <div id="awal_stoks"></div> --}}
                                 </div>
                                 <div class="form-group">
                                     <label for="jumlah">Waktu Pemesanan (Hari)</label>
-                                    <input class="form-control"  name="waktu_pemesanan" id="waktu_pemesanan" style="width: 180%" max="31" type="number" autocomplete="off" multiple>
+                                    <input class="form-control"  name="waktu_pemesanan" id="waktu_pemesanan" style="width: 180%" max="50" type="number" onkeypress="return hanyaAngka(event)" max="2" autocomplete="off" multiple required>
                                     {{-- <div id="awal_stoks"></div> --}}
                                 </div>
                                 <hr>
@@ -226,6 +308,14 @@
                             }
                             
                         }
+                        function hanyaAngka(evt) {
+                        var charCode = (evt.which) ? evt.which : event.keyCode
+                        if (charCode > 31 && (charCode < 48 || charCode > 57))
+                
+                            return false;
+                        return true;
+                        
+		}
                     </script>
             <div class="col-cok">
                 <div class="row">
@@ -245,6 +335,7 @@
                                         <th scope="col" class="sort" data-sort="name">Nama Barang</th>
                                         <th scope="col" class="sort" data-sort="name">Jenis</th>
                                         <th scope="col" class="sort" data-sort="name">Jumlah</th>
+                                        <th scope="col" class="sort" data-sort="name">Status</th>
                                         <th scope="col" class="sort" data-sort="completion">Action</th>
                                         </tr>
                                     </thead>
@@ -267,6 +358,12 @@
                                         </td>
                                         <td class="budget">
                                             {{ $perm->jumlah }} Kg
+                                        </td>
+                                        <td class="budget">
+                                            <span class="badge badge-dot badge-lg mr-4"><i class="{{($perm->status == 1) ?
+                                            'bg-success' : 'bg-danger'}}"></i>
+                                                <span class="status">{{($perm->status == 1) ? 'Selesai' : 'Masih Dilakukan'}}</span>
+                                            </span>
                                         </td>
                                         <td>
                                             <form action="{{url('/permintaan/'.$perm->id.'/destroy') }}" method="POST"

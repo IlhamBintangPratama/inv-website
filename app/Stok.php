@@ -10,7 +10,10 @@ class Stok extends Model
         'items_id',
         'types_id',
         'stok',
-        'tanggal'
+        'hrg_beli',
+        'hrg_jual',
+        'tanggal',
+        'reorder'
     ];
     public function total_items() {
 

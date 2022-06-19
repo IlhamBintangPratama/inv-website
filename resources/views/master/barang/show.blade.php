@@ -58,3 +58,4 @@
     </div>
 </div>
 @endsection ('content')
+@section('footer.script')

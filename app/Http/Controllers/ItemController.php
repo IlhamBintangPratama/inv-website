@@ -74,7 +74,7 @@ class ItemController extends Controller
         
         $items->save();
 
-        return redirect('/barang')->with('toast_success','Data berhasil tersimpan');
+        return redirect('/barang')->with('toast_success','Data berhasil tersimpan!');
     }
 
     /**
@@ -134,7 +134,7 @@ class ItemController extends Controller
         $items->by_pesan = $request->get('by_pesan');
 
         $items->save();
-        return redirect('/barang');
+        return redirect('/barang')->with('toast_success','Data berhasil di ubah!');
     }
 
     /**
@@ -149,6 +149,6 @@ class ItemController extends Controller
 
 		$items->delete();
 
-		return redirect('/barang')->with('status','Data barang berhasil dihapus!');
+		return redirect('/barang')->with('toast_warning','Data berhasil dihapus!');
     }
 }

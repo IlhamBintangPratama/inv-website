@@ -8,7 +8,7 @@ class Type extends Model
 {
     protected $fillable = [
         'items_id',
-        'hrg_item',
+        // 'hrg_item',
         'jns_brg'
     ];
 

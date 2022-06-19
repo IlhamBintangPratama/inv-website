@@ -2,8 +2,8 @@
     <div class="scrollbar-inner">
       <!-- Brand -->
       <div class="sidenav-header" >
-        <a class="navbar-brand" href="#">
-          <img src="{{asset('assets/img/brand/logo1.png')}}" class="navbar-brand-img" height="79" width="69%" alt="...">
+        <a class="navbar-brand" href="/dashboard">
+          <img src="{{asset('assets/img/brand/logo1.png')}}" class="navbar-brand-img" alt="...">
         </a>
       </div>
       <div class="navbar-inner">
@@ -17,7 +17,7 @@
           <!-- Nav items -->
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link" href="/dashboard">
+              <a class="nav-link" href="{{ url('dashboard')}}">
                 <i class="ni ni-shop text-dark"></i>
                 <span class="nav-link-text">Dashboard</span>
               </a>
@@ -25,20 +25,20 @@
             <li class="nav-item">
               <a class="nav-link" href="#navbar-master" data-toggle="collapse" role="button" aria-expanded="false" aria-controls="navbar-master">
                 <i class="ni ni-archive-2 text-primary"></i>
-                <span class="nav-link-text">Approved</span>
+                <span class="nav-link-text">Data Master</span>
               </a>
               <div class="collapse" id="navbar-master">
                 <ul class="nav nav-sm flex-column">
                   <li class="nav-item">
-                    <a href="{{ url('barang')}}" class="nav-link">
-                      <span class="sidenav-normal"> Kebutuhan Gudang </span>
+                    <a href="{{ url('mana_user')}}" class="nav-link">
+                      <span class="sidenav-normal"> Managemen User </span>
                     </a>
                   </li>
-                  <li class="nav-item">
+                  {{-- <li class="nav-item">
                     <a href="{{ url('jenis')}}" class="nav-link">
-                      <span class="sidenav-normal"> Barang Keluar </span>
+                      <span class="sidenav-normal">  </span>
                     </a>
-                  </li>
+                  </li> --}}
                 </ul>
               </div>
             </li>
@@ -71,13 +71,13 @@
               <div class="collapse" id="navbar-laporan">
                 <ul class="nav nav-sm flex-column">
                   <li class="nav-item">
-                    <a href="{{ url('laporan-stok')}}" class="nav-link">
-                      <span class="sidenav-normal"> Laporan Barang Masuk </span>
+                    <a href="{{ url('laporan-masuk')}}" class="nav-link">
+                      <span class="sidenav-normal"> Laporan Masuk </span>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a href="{{ url('resultmethod')}}" class="nav-link">
-                      <span class="sidenav-normal"> Laporan Barang Keluar </span>
+                    <a href="{{ url('laporan-keluar')}}" class="nav-link">
+                      <span class="sidenav-normal"> Laporan Keluar </span>
                     </a>
                   </li>
                 </ul>
@@ -93,7 +93,7 @@
           <!-- Navigation -->
           <ul class="navbar-nav mb-md-3">
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <a class="nav-link" href="{{ url('profile_adm')}}">
                 <i class="ni ni-single-02"></i>
                 <span class="nav-link-text">My Profile</span>
               </a>

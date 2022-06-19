@@ -17,7 +17,7 @@ class CreateTypesTable extends Migration
             $table->increments('id', true);
             $table->integer('items_id')->unsigned();
             $table->string('jns_brg');
-            $table->string('hrg_item');
+            $table->string('reorder');
             $table->timestamps();
 
             $table->foreign('items_id')->references('id')->on('items')->onDelete('cascade')->onUpdate('cascade');

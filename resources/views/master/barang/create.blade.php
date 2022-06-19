@@ -3,7 +3,7 @@
 @section ('content')
 <div class="main-content" id="panel">
     <!-- Topnav -->
-    @include ('admin-layouts.top')
+ @include ('admin-layouts.top')
 <div id="page-wrapper" class="container-fluid ml-3 mt-4">
     <div class="row">
         <div class="col-lg-12">
@@ -21,7 +21,7 @@
                     <fieldset >
                         <div class="form-group">
                             <label for="nm_brg">Nama Barang</label>
-                            <input class="form-control @error('nm_brg') is-invalid @enderror"  name="nm_brg" id="nm_brg" type="text" placeholder="Nama Barang" autocomplete="off">
+                            <input class="form-control @error('nm_brg') is-invalid @enderror"  name="nm_brg" id="nm_brg" type="text" placeholder="Nama Barang" autocomplete="off" required='required'>
                             @error('nm_brg')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -29,14 +29,16 @@
                         
                         <div class="form-group">
                             <label for="by_simpan">Biaya Simpan (%)</label>
-                            <input class="form-control @error('by_simpan') is-invalid @enderror" name="by_simpan" id="by_simpam" type="number" max="100" placeholder="Biaya simpan per Kg" autocomplete="off">
+                            <input class="form-control @error('by_simpan') is-invalid @enderror" name="by_simpan" id="by_simpam" type="number" max="100"
+                                        placeholder="Biaya simpan per Kg" autocomplete="off" onkeypress="return hanyaAngka(event)" required='required'>
                             @error('by_simpan')
                             <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="form-group">
                             <label for="by_pesan">Biaya Pesan</label>
-                            <input class="form-control @error('by_pesan') is-invalid @enderror"  name="by_pesan" id="by_pesan" type="number" placeholder="Biaya pesan per Kg" autocomplete="off">
+                            <input class="form-control @error('by_pesan') is-invalid @enderror"  name="by_pesan" id="by_pesan" type="number"
+                                        placeholder="Biaya pesan per Kg" autocomplete="off" onkeypress="return hanyaAngka(event)" required='required'>
                             @error('by_pesan')
                             <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -50,6 +52,16 @@
 
             </div>
         </div>
+        <script>
+            function hanyaAngka(evt) {
+                var charCode = (evt.which) ? evt.which : event.keyCode
+                if (charCode > 31 && (charCode < 48 || charCode > 57))
+        
+                    return false;
+                return true;
+                
+            }
+        </script>
     </div>
 </div>
 @endsection ('content')

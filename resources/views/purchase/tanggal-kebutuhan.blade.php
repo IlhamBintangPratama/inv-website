@@ -61,6 +61,7 @@
                             height: .625rem;
                         }
                     </style>
+                    
                     <div class="table-responsive">
                         {{-- <table class="table align-items-center table-flush">
                             <thead class="thead-light">
@@ -87,7 +88,7 @@
                             <th scope="col" class="sort" data-sort="name">Jumlah</th>
                             <th scope="col" class="sort" data-sort="name">Frekuensi</th>
                             <th scope="col" class="sort" data-sort="name">Waktu Pemesanan</th>
-                            {{-- <th scope="col" class="sort" data-sort="name">Status</th> --}}
+                            <th scope="col" class="sort" data-sort="name">Status</th>
                             </tr>
                         </thead>
                         <tbody class="list">
@@ -111,16 +112,24 @@
                             <td class="budget">
                                 {{ $laps->waktu_pemesanan }} Hari
                             </td>
-                            {{-- <td>
-                                <span class="badge badge-dot badge-lg mr-4"><i class="{{($laps->status == 1) ?
-                                'bg-success' : 'bg-danger'}}"></i>
-                                    <span class="status">{{($laps->status == 1) ? 'Completed' : 'On progress'}}</span>
-                                </span>
-                            </td> --}}
+                            <td>
+                                <?php if($laps->status == '1'){?>
+                                    <a href="{{url('purchase/kebutuhan', $laps->id)}}" class="btn-success">Selesai</a>
+                                <?php }else{?>
+                                    <a href="{{url('purchase/kebutuhan', $laps->id)}}" class="btn-danger">Masih Dilakukan</a>
+                                <?php }?>
+                            </td>
                             </tr>
                         @endforeach
                         </tbody>
                         </table>
+                    </div>
+                    <div class="card-footer py-4">
+                        <nav aria-label="...">
+                            <ul class="pagination justify-content-end mb-0">
+                            {{ $kebutuhan->links()}}
+                            </ul>
+                        </nav>
                     </div>
                 </div>
         </div>

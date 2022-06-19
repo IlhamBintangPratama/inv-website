@@ -18,15 +18,36 @@ class LapstoksController extends Controller
     public function index(Request $request)
     {
         $keyword = $request->get('keyword');
-        $lapstok = Lapstok::paginate(8);
+        $tanggal = Lapstok::groupBy('tanggal')->get('tanggal');
+        $lapstok = Lapstok::select('lapstoks.id','tanggal','items.nm_brg','id_jenis','awal','stok_masuk','stok_keluar','akhir')
+                    ->join('items', 'id_barang', '=', 'items.id')->paginate(8);
         if($keyword != ""){
-            $lapstok = Lapstok::where ( 'nm_brg', 'LIKE', '%' . $keyword . '%' )->paginate (8)->setPath ( '' );
+            $lapstok = Lapstok::where ( 'items.nm_brg', 'LIKE', '%' . $keyword . '%' )->join('items', 'id_barang', '=', 'items.id')
+                        ->paginate (8)->setPath ( '' );
             $pagination = $lapstok->appends ( array (
                 'keyword' => $request->get('keyword') 
                 ));
         }
         $profil = User::select('name','level')->where('level', '=', 1)->first();
-        return view('laporan.stok.index', compact('lapstok','profil'));
+
+        return view('laporan.stok.index', compact('lapstok','profil','tanggal'));
+    }
+
+    public function periode(Request $request)
+    {
+        try{
+            $awal = $request->tgl_awal;
+            $akhir = $request->tgl_akhir;
+            $tanggal = Lapstok::groupBy('tanggal')->get('tanggal');
+            $lapstok = Lapstok::select('lapstoks.id','tanggal','items.nm_brg','id_jenis','awal','stok_masuk','stok_keluar','akhir')
+            ->whereDate('tanggal', '>=', $awal)->whereDate('tanggal', '<=', $akhir)->orderBy('tanggal', 'desc')
+            ->join('items', 'id_barang', '=', 'items.id')->paginate(8);
+
+            $profil = User::select('name','level')->where('level', '=', 1)->first();
+            return view('laporan.stok.index', compact('lapstok', 'profil','tanggal'));
+        }catch(\Exception $e){
+            return redirect()->back();
+        }
     }
 
     /**
@@ -36,7 +57,7 @@ class LapstoksController extends Controller
      */
     public function create()
     {
-        //
+        $tanggal = Lapstok::groupBy('tanggal')->get('tanggal');
     }
 
     /**
@@ -90,15 +111,21 @@ class LapstoksController extends Controller
      * @param  \App\Lapstok  $lapstok
      * @return \Illuminate\Http\Response
      */
-    public function cetakLapStok($tgllaporan)
+    public function cetakLapStok($hasilfilter)
     {
-        // dd(["Tanggal Laporan: ".$tgllaporan]);
-        
-        $stokPerTanggal = Lapstok::with('barangz','jenisz')->where('tanggal', '=', $tgllaporan)->get();
-        
-        $tanggalStok = Lapstok::with('barangz','jenisz')->where('tanggal', '=', $tgllaporan)->first();
-        return view('laporan.stok.cetak-stok-pertanggal', compact('stokPerTanggal','tanggalStok'));
-
+        // dd(["Tanggal Laporan: ".$hasilfilter]);
+        try{
+            if($hasilfilter != null){
+                $stokPerTanggal = Lapstok::with('barangz','jenisz')->where('tanggal', '=', $hasilfilter)->get();
+                
+                $tanggalStok = Lapstok::with('barangz','jenisz')->where('tanggal', '=', $hasilfilter)->first();
+                return view('laporan.stok.cetak-stok-pertanggal', compact('stokPerTanggal','tanggalStok'));
+            }else{
+                return redirect()->back()->with('toast_error', 'Tanggal masih belum di isi');
+            }
+        }catch(\Exception $e){
+            return redirect()->back();
+        }
         
     }
 }

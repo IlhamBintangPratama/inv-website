@@ -147,8 +147,10 @@
           </div>
         </div>
       </div>
-      @endsection('content')
+      @include('sweetalert::alert')
 
+      @endsection('content')
+      
 @section('footer.script')
 
   <script>

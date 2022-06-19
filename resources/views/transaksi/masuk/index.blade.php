@@ -17,9 +17,7 @@
                 <input name="keyword" class="form-control" placeholder="Cari berdasarkan nama" type="text">
               </div>
             </div>
-            <button type="submit" class="btn btn-primary mb-2" data-target="#navbar-search-main" aria-label="Close">
-              
-            </button>
+            
           </form>
           <!-- Navbar links -->
           <ul class="navbar-nav align-items-center  ml-md-auto ">
@@ -115,7 +113,6 @@
                     <th scope="col" class="sort" data-sort="name">QTY</th>
                     <th scope="col" class="sort" data-sort="name">Tanggal</th>
                     <th scope="col" class="sort" data-sort="name">Harga Item</th>
-                    <th scope="col" class="sort" data-sort="completion">Action</th>
                   </tr>
                 </thead>
                 <tbody class="list">

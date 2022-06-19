@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Eoq;
 use App\Rop;
+use App\User;
 use App\Hasilmetode;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RopController extends Controller
 {   
@@ -13,8 +15,8 @@ class RopController extends Controller
     {
         $eoq = Eoq::all();
         // $per = DB::table('periodes')->select('periode','jml_hari')->get();
-
-        return view('method.rop.create', compact('eoq')); 
+        $profil = User::select('id','name','email')->where('id', '=', Auth::user()->id)->first();
+        return view('method.rop.create', compact('eoq','profil')); 
     }
 
     /**
@@ -27,26 +29,22 @@ class RopController extends Controller
     {
         $request->validate([
             'eoq_id'=> 'required',
-            'nm_brg'=> 'required',
-            'jns_brg' => 'required',
-            'periode' => 'required',
-            'frekuensi'=> 'required',
             'leadtime'=> 'required',
         ]);
         $r = $request->leadtime * $request->eoq / $request->waktu;
         // dd($r);
-        $rmetode = Hasilmetode::where('eoq', '=', $request->eoq)->where('periode', '=', $request->periode)
-        ->first();
-        $rmetode->rop = round($r);
+        $rmetode = Hasilmetode::all()->where('eoq', '=', $request->eoq)->first();
+        // dd($rmetode);
+        $rmetode->rop = round($r, 2);
         $rops = Rop::create([
             'eoq_id' => request('eoq_id'),
-            'rop' => round($r),
+            'rop' => round($r, 2),
             
         ]);
         $rmetode->save();
         // $rops->save();
 
-        return redirect('/rop/create')->with('toast_success','Data berhasil tersimpan');
+        return redirect('/rop/create')->with('toast_success','Data berhasil tersimpan!');
     }
 
     function pickeoq($id, Request $request){

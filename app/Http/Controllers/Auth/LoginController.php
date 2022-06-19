@@ -23,16 +23,21 @@ class LoginController extends Controller
     */
     public function logUser (Request $request){
 
-        if(Auth::attempt(['username' => $request->username, 'password' => $request->password, 'level' => 1])){
-            return redirect('/dashboard');
+        if($request->email != null){
+            if(Auth::attempt(['email' => $request->email, 'password' => $request->password, 'level' => 1])){
+                return redirect('/dashboard_admin');
+            }
+            elseif(Auth::attempt(['email' => $request->email, 'password' => $request->password, 'level' => 2])){
+                return redirect('/home');
+            }
+            elseif(Auth::attempt(['email' => $request->email, 'password' => $request->password, 'level' => 3])){
+                return redirect('/dashboard');
+            }
+            return redirect('/')->with('toast_error', 'username dan password salah');
+        }else{
+            return redirect('/')->with('toast_error', 'Silahkan masukan username dan password');
         }
-        elseif(Auth::attempt(['username' => $request->username, 'password' => $request->password, 'level' => 2])){
-            return redirect('/home');
-        }
-        elseif(Auth::attempt(['username' => $request->username, 'password' => $request->password, 'level' => 3])){
-            return redirect('/m-dashboard');
-        }
-        return redirect('/')->with('message', 'Username dan Password salah');
+        
     }
 
     public function logout (Request $request){

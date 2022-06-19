@@ -88,10 +88,21 @@
             </ol>
             </nav>
         </div>
-        <div class="col-lg-6 col-5 text-right">
+        {{-- <div class="col-lg-6 col-5 text-right">
+            <input class="form-tanggal" style="height: 38px; width: 30%; margin-left:5%" name="tgllaporan" id="tgllaporan" type="date" required>
             <input class="form-tanggal mr-2" style="height: 38px; width: 30%; margin-left:5%" name="tgllaporan" id="tgllaporan" type="date" required>
             <a href="" onclick="this.href='{{url('cetak-laporan-stok')}}/'+document.getElementById('tgllaporan').value" target="_blank" class="btn btn-sm btn-neutral">Print</a>
-            {{-- <a href="#" class="btn btn-sm btn-neutral">Filters</a> --}}
+            
+        </div>
+     --}}
+        <div class="row mt-4" >
+            {{-- <div class="col" style="width: 100%"> --}}
+                <form action="{{ url('laporan-stok/periode')}}" method="get" class="form-inline">
+                    <input type="date" name="tgl_awal" class="form-control" style="margin-left: 330px">
+                    <input type="date" name="tgl_akhir" class="form-control" style="margin-left: 7px; margin-right: 7px;">
+                    <button type="submit" name="filter_tgl" class="btn btn-neutral">Filter</button>
+                </form>
+            {{-- </div> --}}
         </div>
         </div>
     </div>
@@ -105,6 +116,69 @@
         <!-- Card header -->
         <div class="card-header border-0">
             <h3 class="mb-0">Lap. Stok Gudang</h3>
+            {{-- <a href="" onclick="this.href='{{url('cetak-hasil-perhitungan')}}/'+document.getElementById('tgl_awal','tgl_akhir').value" target="_blank" class="btn btn-sm btn-neutral"
+                style="height: 34px; width: 9%; margin-top: -1%; margin-left: 90.7%; margin-top: -3.5%" name="filter" ><h4><i class="fa-solid fa-print"></i>Print</h4></a>
+            --}}
+            <button type="button" class="btn btn-sm btn-neutral" data-toggle="modal" data-target="#exampleModal" 
+                    style="height: 34px; width: 9%; margin-top: -1%; margin-left: 90.7%; margin-top: -3.5%">
+                    <h4><i class="fa-solid fa-print"></i>Print</h4>
+            </button>
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content" style="width: 330px;">
+                        <div class="modal-header">
+                            
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form action="{{ url('laporan-stok/periode')}}" method="get" class="form-inline">
+                            <div class="box-body">
+                                <div class="form-group" style="margin-top: -30px; margin-left: 20px;">
+                                    <label for="hasilfilter">Berdasarkan Tanggal</label>
+                                </div>
+                                <div class="form-group" style="margin-left: 20px;">
+                                    <select name="hasilfilter" id="hasilfilter" class="form-control" style="width: 280px; margin-top: 20px;"
+                                        onchange="pickType(this);" required>
+                                        <option value="">- pilih -</option>
+                                        @foreach ($tanggal as $tgl)
+                                        <option value="{{$tgl->tanggal}}">{{$tgl->tanggal}}</option>
+                                            @endforeach
+                                    </select>
+                                    {{-- <button type="submit" name="filter_tgl" class="btn btn-neutral" style="margin-left: 20px; width: 280px; margin-bottom: 20px;">Print</button> --}}
+                                    <a href="" onclick="this.href='{{url('cetak-laporan-stok')}}/'+document.getElementById('hasilfilter').value" target="_blank" class="btn btn-sm btn-primary"
+                                    style="margin-top: 20px; width: 280px; margin-bottom: 20px;" name="filter" ><h4 style="color: white;"><i class="fa-solid fa-print"></i>Print</h4></a>
+                                </div>
+                            </div>
+                            
+                        </form>
+                    </div>
+                </div>
+            </div>                        
+            {{-- <script>
+                $(document).ready(function(){
+                $(document).on('click', '#select', function(){
+                    var id_eoq = $(this).data('id');
+                    var nm_brg = $(this).data('nama');
+                    var nm_brg2 = $(this).data('nama2');
+                    nm_brg+="<option value='"+nm_brg+"'>"+nm_brg2+"</option>"
+                    var jns_brg = $(this).data('jenis');
+                    var jns_brg2 = $(this).data('jenis2');
+                    jns_brg+="<option value='"+jns_brg+"'>"+jns_brg2+"</option>"
+                    var eoq = $(this).data('jumlah');
+                    var frekuensi = $(this).data('frekuensi');
+                    var waktu = $(this).data('waktu');
+                    $('#id_eoq').val(id_eoq);
+                    $('#nm_brg').html(nm_brg).show();
+                    $('#input-barang').html(jns_brg).show();
+                    $('#jumlah').val(eoq);
+                    $('#frekuensi').val(frekuensi);
+                    $('#waktu_pemesanan').val(waktu);
+                    $('#exampleModal').modal('hide');
+                })
+            })
+            </script> --}}
         </div>
         <!-- Light table -->
         <div class="table-responsive">
@@ -131,7 +205,7 @@
                 <th scope="row">
                     <div class="media align-items-center">
                     <div class="media-body">
-                        <span class="name mb-0 text-sm">{{ $laps->barangz->nm_brg }}</span>
+                        <span class="name mb-0 text-sm">{{ $laps->nm_brg }}</span>
                     </div>
                     </div>
                 </th>

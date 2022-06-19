@@ -56,7 +56,7 @@
                 <div class="dropdown-header noti-title">
                   <h6 class="text-overflow m-0">Welcome!</h6>
                 </div>
-                <a href="{{ url('profile')}}" class="dropdown-item">
+                <a href="{{ url('profile_adm')}}" class="dropdown-item">
                   <i class="ni ni-single-02"></i>
                   <span>My profile</span>
                 </a>
@@ -89,7 +89,7 @@
               </nav>
             </div>
             <div class="col-lg-6 col-5 text-right">
-             <a href="{{ url('keluar/create') }}" class="btn btn-sm btn-neutral">Baru</a>
+              <a href="{{ url('keluar/create') }}" class="btn btn-sm btn-neutral">Baru</a>
             </div>
           </div>
         </div>
@@ -110,6 +110,7 @@
                 <thead class="thead-light">
                   <tr>
                     <th>No</th>
+                    <th scope="col" class="sort" data-sort="name">Buyer</th>
                     <th scope="col" class="sort" data-sort="name">Nama Barang</th>
                     <th scope="col" class="sort" data-sort="name">Jenis</th>
                     <th scope="col" class="sort" data-sort="name">QTY</th>
@@ -122,6 +123,9 @@
                 @foreach($outs as $no => $out)
                   <tr>
                     <td>{{ $outs->firstItem()+$no}} </td>
+                    <td class="budget">
+                      {{ $out->buyer }}
+                    </td>
                     <th scope="row">
                       <div class="media align-items-center">
                         <div class="media-body">

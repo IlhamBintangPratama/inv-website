@@ -19,7 +19,63 @@
   <!-- Main content -->
   <div class="main-content" id="panel">
     <!-- Topnav -->
-    @include ('admin-layouts.top')
+    <nav class="navbar navbar-top navbar-expand navbar-dark bg-primary border-bottom">
+      <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <!-- Search form -->
+          
+          <!-- Navbar links -->
+          <ul class="navbar-nav align-items-center  ml-md-auto ">
+            <li class="nav-item d-xl-none">
+              <!-- Sidenav toggler -->
+              <div class="pr-3 sidenav-toggler sidenav-toggler-dark" data-action="sidenav-pin" data-target="#sidenav-main" role="button">
+                <div class="sidenav-toggler-inner">
+                  <i class="sidenav-toggler-line"></i>
+                  <i class="sidenav-toggler-line"></i>
+                  <i class="sidenav-toggler-line"></i>
+                </div>
+              </div>
+            </li>
+            <li class="nav-item d-sm-none">
+              <a class="nav-link" href="#" data-action="search-show" data-target="#navbar-search-main">
+                <i class="ni ni-zoom-split-in"></i>
+              </a>
+            </li>
+            
+            
+          </ul>
+          <ul class="navbar-nav align-items-center  ml-auto ml-md-0 ">
+            <li class="nav-item dropdown">
+              <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <div class="media align-items-center">
+                  <span class="avatar avatar-sm rounded-circle">
+                    <img alt="Image placeholder" src="../../assets/img/theme/team-4.jpg">
+                  </span>
+                  <div class="media-body  ml-2  d-none d-lg-block">
+                    <span class="mb-0 text-sm  font-weight-bold">{{$profil->name}}</span>
+                  </div>
+                </div>
+              </a>
+              <div class="dropdown-menu  dropdown-menu-right ">
+                <div class="dropdown-header noti-title">
+                  <h6 class="text-overflow m-0">Welcome!</h6>
+                </div>
+                <a href="{{ url('profile')}}" class="dropdown-item">
+                  <i class="ni ni-single-02"></i>
+                  <span>My profile</span>
+                </a>
+                
+                <div class="dropdown-divider"></div>
+                <a href="{{ url('logout')}}" class="dropdown-item">
+                  <i class="ni ni-user-run"></i>
+                  <span>Logout</span>
+                </a>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
     <!-- Header -->
     <!-- Header -->
     <div class="header bg-primary pb-6">
@@ -78,8 +134,8 @@
                 <div class="card-body">
                   <div class="row">
                     <div class="col">
-                      <h5 class="card-title text-uppercase text-muted mb-0">Kapasitas Gudang</h5>
-                      <span class="h2 font-weight-bold mb-0" id='blink_' style="color: {{($kapasitas == 199899) ? 'red' : 'black'}}">{{($kapasitas == 200000) ? $kapasitas : $kapasitas}}/200000</span>
+                      <h5 class="card-title text-uppercase text-muted mb-0">Total Stok Gudang</h5>
+                      <span class="h2 font-weight-bold mb-0" id='blink_' style="color: {{($kapasitas == 199899) ? 'red' : 'black'}}">{{($kapasitas == 200000) ? $kapasitas : $kapasitas}} Kg</span>
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-gradient-orange text-white rounded-circle shadow">
@@ -138,13 +194,13 @@
     </div>
     <!-- Page content -->
     <div class="container-fluid mt--6">
-      <div class="row">
+      {{-- <div class="row">
         <div class="col">
           <div class="card bg-default">
             <div id="chartSales"></div>
           </div>
         </div>
-      </div>
+      </div> --}}
       <div class="row">
         <div class="col">
           <div class="card">
@@ -177,7 +233,7 @@
                     <th scope="row">
                       <div class="media align-items-center">
                         <div class="media-body">
-                          <span class="name mb-0 text-sm">{{ $stok->updated_at}}</span>
+                          <span class="name mb-0 text-sm">{{ $stok->updated_at }}</span>
                         </div>
                       </div>
                     </th>
@@ -188,7 +244,12 @@
                       {{ $stok->type->jns_brg}}
                     </td>
                     <td class="budget">
-                      {{ $stok->stok }} Kg
+                      <?php if($stok->stok <= $stok->reorder){?>
+                        <a href="{{url('re_stok/'.$stok->id.'/getstok')}}" style="color: red">{{$stok->stok}}</a>
+                      <?php }else{?>
+                        <span style="color: black" >{{$stok->stok}}</span>
+                      <?php }?>
+                      
                     </td>
                   </tr>
                   @endforeach
@@ -204,6 +265,7 @@
             </div>
           </div>
         </div>
+        
         @include('sweetalert::alert')
       </div>
       
@@ -211,7 +273,7 @@
       <footer class="footer pt-0">
         <div class="row align-items-center justify-content-lg-between">
           <div class="col-lg-6">
-            <div class="copyright text-center  text-lg-left  text-muted">
+            <div class="copyright text-center  text-lg-left  text-muted" style="margin-top: 110px">
               &copy; 2021 <h4>Created by Tama Dev</h4>
             </div>
           </div>
@@ -240,7 +302,7 @@
   @section('footer.script')
   <script src="{{asset('assets/js/highcharts.js')}}"></script>
   {{-- <script src="{{asset('assets/js1/jquery-3.4.1.min.js')}}"></script> --}}
-  <script>
+  {{-- <script>
     Highcharts.chart('chartSales', {
     chart: {
         type: 'line'
@@ -252,7 +314,7 @@
         text: 'CV. Wira Samudra'
     },
     xAxis: {
-        categories: {!!json_encode($categories)!!}
+        categories: {!!json_encode($categories)!!} 
     },
     yAxis: {
         title: {
@@ -280,5 +342,5 @@
 // 	$('.blink_').fadeIn(500);
 // }
 // setInterval(blink_,1000);       
-  </script>
+  </script> --}}
   @endsection

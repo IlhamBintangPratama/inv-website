@@ -10,7 +10,7 @@ class Requeststok extends Model
         'idbarang',
         'idjenis',
         'jumlah',
-        'catatan',
+        // 'catatan',
         'tanggal',
         'waktu_pemesanan',
         'frekuensi',

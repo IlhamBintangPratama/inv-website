@@ -18,10 +18,13 @@ class TypeController extends Controller
 
     
     public function index(Request $request)
-    {   $keyword = $request->get('keyword');
-        $types = Type::paginate(8);
+    {   
+        $keyword = $request->get('keyword');
+        $types = Type::select('types.id', 'items.nm_brg', 'jns_brg')
+                    ->join('items', 'items_id', '=', 'items.id')->paginate(8);
         if($keyword != ""){
-            $types = Type::where ( 'jns_brg', 'LIKE', '%' . $keyword . '%' )->paginate (8)->setPath ( '' );
+            $types = Type::where ( 'items.nm_brg', 'LIKE', '%' . $keyword . '%' )->join('items', 'items_id', '=', 'items.id')
+                        ->paginate (8)->setPath ( '' );
             $pagination = $types->appends ( array (
             'keyword' => $request->get('keyword') 
             ) );
@@ -29,6 +32,7 @@ class TypeController extends Controller
         $profil = User::select('name','level')->where('level', '=', 1)->first();
         return view('master.jenis.index', compact('types','profil'));
     }
+    
 
     /**
      * Show the form for creating a new resource.
@@ -51,18 +55,16 @@ class TypeController extends Controller
         $request->validate([
             'items_id' => 'required',
             'jns_brg' => 'required|max:255',
-            'hrg_item' => 'required',
         ]);
 
         $types = Type::create([
             'items_id' => request('items_id'),
             'jns_brg' => request('jns_brg'),
-            'hrg_item' => request('hrg_item'),
         ]);
 
         $types->save();
 
-        return redirect('/jenis')->with('toast_success','Data berhasil tersimpan');
+        return redirect('/jenis')->with('toast_success','Data berhasil tersimpan!');
     }
 
     /**
@@ -87,8 +89,9 @@ class TypeController extends Controller
     public function edit($id)
     {
         $types = Type::find($id);
+        $items = Type::groupBy('items_id')->get('items_id');
 
-        return view('master.jenis.edit', compact('types','id'));
+        return view('master.jenis.edit', compact('types','id','items'));
     }
 
     /**
@@ -103,16 +106,14 @@ class TypeController extends Controller
         $request->validate([
             'items_id' => 'required',
             'jns_brg' => 'required|max:255',
-            'hrg_item' => 'required',
         ]);
 
         $types = Type::find($id);
         $types->items_id = $request->get('items_id');
         $types->jns_brg = $request->get('jns_brg');
-        $types->hrg_item = $request->get('hrg_item');
 
         $types->save();
-        return redirect('/jenis');
+        return redirect('/jenis')->with('toast_success','Data berhasil di ubah!');
     }
 
     /**
@@ -127,6 +128,6 @@ class TypeController extends Controller
 
 		$types->delete();
 
-		return redirect('/jenis')->with('status','Jenis barang berhasil dihapus!');
+		return redirect('/jenis')->with('toast_warning','Data berhasil dihapus!');
     }
 }

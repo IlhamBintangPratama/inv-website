@@ -30,10 +30,10 @@
             @foreach ($stokPerTanggal as $spt)
             <tr align="center">
                 <td>{{$loop->iteration}}</td>
-                <td>{{$spt->suplier}}</td>
+                <td>{{$spt->suplier->name}}</td>
                 <td>{{$spt->brg1->nm_brg}}</td>
                 <td>{{$spt->jns1->jns_brg}}</td>
-                <td>{{$spt->jumlah}}</td>
+                <td>{{$spt->jumlah}} Kg</td>
                 <td>@currency($spt->hrg_item)</td>
                 <td>@currency($spt->total)</td>
                 {{-- <td>{{$spt->akhir}}</td> --}}

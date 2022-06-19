@@ -83,15 +83,19 @@
             <nav aria-label="breadcrumb" class="d-none d-md-inline-block ml-md-4">
             <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
                 <li class="breadcrumb-item"><a href="/dashboard"><i class="fas fa-home"></i></a></li>
-                <li class="breadcrumb-item"><a href="{{ url('laporan-hasil-metode')}}">Lap. Stok Gudang</a></li>
+                <li class="breadcrumb-item"><a href="{{ url('laporan-hasil-metode')}}">Hasil Perhitungan</a></li>
                 <li class="breadcrumb-item active" aria-current="page">List</li>
             </ol>
             </nav>
         </div>
-        <div class="col-lg-6 col-5 text-right">
-            <input class="form-tanggal mr-2" style="height: 38px; width: 30%; margin-left:5%" name="tglhasil" id="tglhasil" type="date">
-            <a href="" onclick="this.href='{{url('cetak-hasil-perhitungan')}}/'+document.getElementById('tglhasil').value" target="_blank" class="btn btn-sm btn-neutral">Print</a>
-            {{-- <a href="#" class="btn btn-sm btn-neutral">Filters</a> --}}
+        <div class="row mt-4" >
+            {{-- <div class="col" style="width: 100%"> --}}
+                <form action="{{ url('laporan-hasil-metode/periode')}}" method="get" class="form-inline">
+                    <input type="date" name="tgl_awal" class="form-control" style="margin-left: 330px">
+                    <input type="date" name="tgl_akhir" class="form-control" style="margin-left: 7px; margin-right: 7px;">
+                    <button type="submit" name="filter_tgl" class="btn btn-neutral">Filter</button>
+                </form>
+            {{-- </div> --}}
         </div>
         </div>
     </div>
@@ -105,7 +109,44 @@
         <!-- Card header -->
         <div class="card-header border-0">
             <h3 class="mb-0">Lap. Hasil Perhitungan</h3>
-        </div>
+            <button type="button" class="btn btn-sm btn-neutral" data-toggle="modal" data-target="#exampleModal" 
+                    style="height: 34px; width: 9%; margin-top: -1%; margin-left: 90.7%; margin-top: -3.5%">
+                    <h4><i class="fa-solid fa-print"></i>Print</h4>
+            </button>
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content" style="width: 330px;">
+                        <div class="modal-header">
+                            
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form action="{{ url('laporan-stok/periode')}}" method="get" class="form-inline">
+                            <div class="box-body">
+                                <div class="form-group" style="margin-top: -35px; margin-left: 20px;">
+                                    <label for="label">Berdasarkan Tanggal</label>
+                                </div>
+                                <div class="form-group" style="margin-left: 20px; margin-top: 20px;">
+                                    <div class="input-group">
+                                        <label for="label">Dari</label>
+                                        <input type="date" name="tglawal" id="tglawal" class="form-control ml-5" required='required' value="{{date('Y-m-d')}}" style="width: 200px">
+                                    </div>
+                                    <div class="input-group mt-3">
+                                        <label for="label">Sampai</label>
+                                        <input type="date" name="tglakhir" id="tglakhir" class="form-control ml-4" required='required' value="{{date('Y-m-d')}}" style="width: 200px">
+                                    </div>
+                                    <a href="" onclick="this.href='{{url('cetak-hasil-perhitungan')}}/'+document.getElementById('tglawal').value + '/' +document.getElementById('tglakhir').value" 
+                                        target="_blank" class="btn btn-sm btn-primary"
+                                    style="margin-top: 20px; width: 280px; margin-bottom: 20px;" name="filter" ><h4 style="color: white;"><i class="fa-solid fa-print"></i>Print</h4></a>
+                                </div>
+                            </div>
+                            
+                        </form>
+                    </div>
+                </div>
+            </div>  
         <!-- Light table -->
         <div class="table-responsive">
             <table class="table align-items-center table-flush">
@@ -133,7 +174,7 @@
                 <th scope="row">
                     <div class="media align-items-center">
                     <div class="media-body">
-                        <span class="name mb-0 text-sm">{{ $laps->brgs->nm_brg }}</span>
+                        <span class="name mb-0 text-sm">{{ $laps->nm_brg }}</span>
                     </div>
                     </div>
                 </th>

@@ -13,7 +13,7 @@
                 <div class="input-group-prepend">
                   <span class="input-group-text"><i class="fas fa-search"></i></span>
                 </div>
-                <input name="keyword" class="form-control" placeholder="Cari berdasarkan jenis" type="text">
+                <input name="keyword" class="form-control" placeholder="Cari berdasarkan nama barang" type="text">
               </div>
             </div>
             <button type="submit" class="btn btn-primary mb-2" data-target="#navbar-search-main" aria-label="Close">
@@ -111,9 +111,9 @@
                 <thead class="thead-light">
                   <tr>
                     <th>No</th>
-                    <th scope="col" class="sort" data-sort="name">Nama Barang</th>
+                    {{-- <th scope="col" class="sort" data-sort="name">Nama Barang</th>/ --}}
                     <th scope="col" class="sort" data-sort="name">Jenis</th>
-                    <th scope="col" class="sort" data-sort="name">Harga Item</th>
+                    {{-- <th scope="col" class="sort" data-sort="name">Harga Item</th> --}}
                     <th scope="col" class="sort" data-sort="completion">Action</th>
                   </tr>
                 </thead>
@@ -121,13 +121,13 @@
                 @foreach($types as $no => $type)
                   <tr>
                     <td>{{ $types->firstItem()+$no}}</td>
-                    <th scope="row">
+                    {{-- <th scope="row">
                       <div class="media align-items-center">
                         <div class="media-body">
-                          <span class="name mb-0 text-sm">{{ $type->itemsss->nm_brg }}</span>
+                          <span class="name mb-0 text-sm">{{ $type->nm_brg }}</span>
                         </div>
                       </div>
-                    </th>
+                    </th> --}}
                     <th scope="row">
                       <div class="media align-items-center">
                         <div class="media-body">
@@ -135,13 +135,7 @@
                         </div>
                       </div>
                     </th>
-                    <th scope="row">
-                      <div class="media align-items-center">
-                        <div class="media-body">
-                          <span class="name mb-0 text-sm">@currency($type->hrg_item)</span>
-                        </div>
-                      </div>
-                    </th>
+                    
                     <td>  
                         <a href="{{ url('/jenis/'.$type->id.'/edit') }}" class="btn btn-primary"><i class="fa fa-edit"></i></a>
                         <a href="{{ url('/jenis/'.$type->id.'/show') }}" class="btn btn-danger"><i class="fa fa-trash"></i></a>

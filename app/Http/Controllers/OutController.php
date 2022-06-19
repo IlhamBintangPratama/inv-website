@@ -11,6 +11,7 @@ use App\Bulan;
 use App\Lapstok;
 use App\Chart;
 use App\User;
+use Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\KategoriBarang;
@@ -108,7 +109,7 @@ class OutController extends Controller
     public function index(Request $request)
     {
         $keyword = $request->get('keyword');
-        $outs = Out::select('outs.id','items.nm_brg','stoks_id','id_bulan','jns_id','jumlah','tanggal','kategori')
+        $outs = Out::select('outs.id','items.nm_brg','buyer','stoks_id','id_bulan','jns_id','jumlah','tanggal','kategori')
                     ->join('items', 'id_brg', '=', 'items.id')->paginate(8);
         if($keyword != ""){
             $outs = Out::where ( 'items.nm_brg', 'LIKE', '%' . $keyword . '%' )->join('items', 'id_brg', '=', 'items.id')
@@ -149,10 +150,10 @@ class OutController extends Controller
     public function create()
     {
         $stokss = Type::groupBy('items_id')->get('items_id');
-        $bulann = Bulan::all();
-
+        // $bulann = Bulan::all();
+        $profil = User::select('id','name','email')->where('id', '=', Auth::user()->id)->first();
         // $types = Type::all();
-        return view('transaksi.keluar.create',compact('stokss','bulann')); 
+        return view('transaksi.keluar.create',compact('stokss','profil')); 
     }
 
     /**
@@ -168,25 +169,38 @@ class OutController extends Controller
             'nm_brg' => 'required|max:255',
             'jns_brg'=> 'required',
             'awal' => 'required',
-            // 'jumlah' => 'required',
-            // 'kategori' => 'required',
+            'buyer' => 'required',
+            // 'hrg_jual' => 'required',
             'tanggal' => 'required',
         ]);
 
         $stoks = Stok::where('items_id','=', $request->nm_brg)->where('types_id','=', $request->jns_brg)->first();
-        $stoks->stok -= $request->jumlah;
-        // $stoks2 = Pemakaian::where('items_id','=', $request->nm_brg)->where('types_id','=', $request->jns_brg)
-        //                     ->where('bulan_id','=', $request->id_bulan)->first();
-        // dd($stoks2);
-        // $stoks2->jumlah += $request->jumlah;
-        $ktg = $request->kategori;
-        $jml = '';
-        if($ktg == null){
-            $ktg = 0;
-            $jml = $request->jumlah;
-        }else{
+        if($stoks->stok >= $request->jumlah){
+            
+            $stoks->stok -= $request->jumlah;
+            // $stoks2 = Pemakaian::where('items_id','=', $request->nm_brg)->where('types_id','=', $request->jns_brg)
+            //                     ->where('bulan_id','=', $request->id_bulan)->first();
+            // dd($stoks2);
+            // $stoks2->jumlah += $request->jumlah;
+            
             $ktg = $request->kategori;
-            $jml = $request->total_b;
+            $jml = '';
+            if($ktg == null){
+                $ktg = 0;
+                $jml = $request->jumlah;
+            }else{
+                $ktg = $request->kategori;
+                $jml = $request->total_b;
+            }
+        }else{
+            return redirect('/keluar/create')->with('toast_warning','Stok saat ini tidak mencukupi!');
+        }
+
+        $hrg_jual = '';
+        if($request->hrg_jual != null){
+            $hrg_jual = $request->hrg_jual;
+        }else{
+            return redirect('/keluar/create')->with('toast_warning','Harga jual belum di atur!');
         }
 
         $laps = Lapstok::where('tanggal', '=', date('Y-m-d'))->where('id_barang', '=', $request->nm_brg)->where('id_jenis', '=', $request->jns_brg)
@@ -205,17 +219,17 @@ class OutController extends Controller
             $laps->stok_keluar = $jml;
             $laps->akhir = $request->awal - $jml;
         }
-        $chart = Chart::where('bulan', '=', $request->id_bulan)->where('brg_id', '=', $request->nm_brg)->first();
-        if($chart == NULL){
-            $chart = Chart::create([
-                'bulan' => date('m'),
-                'brg_id' => $request->nm_brg,
-                'jumlah' => $jml,
-            ]);
-        }else{
-            $chart->jumlah += $jml;
-        }
-
+        // $chart = Chart::where('bulan', '=', $request->id_bulan)->where('brg_id', '=', $request->nm_brg)->first();
+        // if($chart == NULL){
+        //     $chart = Chart::create([
+        //         'bulan' => date('m'),
+        //         'brg_id' => $request->nm_brg,
+        //         'jumlah' => $jml,
+        //     ]);
+        // }else{
+        //     $chart->jumlah += $jml;
+        // }
+        
         $outs = Out::create([
             // 'pk_id' => $stoks2->id,
             'stoks_id' => $stoks->id,
@@ -223,17 +237,20 @@ class OutController extends Controller
             'id_brg' => $request->nm_brg,
             'jns_id' => $request->jns_brg,
             'jumlah' => $jml,
+            'hrg_jual' => $hrg_jual, 
             'tanggal' => $request->tanggal,
-            // 'tanggal' => date('Y-m-d'),
+            'buyer' => $request->buyer,
+            'total' => $jml*$request->hrg_jual,
             'kategori' => $ktg,
         ]);
-        $chart->save();
+        
+        // $chart->save();
         $laps->save();
         $stoks->save();
         // $stoks2->save();
         
 
-        return redirect('/keluar')->with('toast_success','Data berhasil tersimpan');
+        return redirect('/keluar')->with('toast_success','Data berhasil tersimpan!');
     }
 
     /**
@@ -245,8 +262,8 @@ class OutController extends Controller
     public function show($id)
     {
         $outs = Out::findorfail($id);
-
-        return view('transaksi.keluar.show', compact('outs'));
+        $profil = User::select('id','name','email')->where('id', '=', Auth::user()->id)->first();
+        return view('transaksi.keluar.show', compact('outs','profil'));
     }
 
     /**
@@ -260,9 +277,9 @@ class OutController extends Controller
         $outs = Out::find($id);
         $stoks = Type::groupBy('items_id')->get('items_id');
         $stks = Type::all();
-
+        $profil = User::select('id','name','email')->where('id', '=', Auth::user()->id)->first();
         $bulann = Bulan::all();
-        return view('transaksi.keluar.edit', compact('outs','id','stoks','stks','bulann'));
+        return view('transaksi.keluar.edit', compact('outs','profil','id','stoks','stks','bulann'));
     }
 
     /**
@@ -309,12 +326,13 @@ class OutController extends Controller
         $outs->id_brg = $request->get('nm_brg');
         $outs->jns_id = $request->get('jns_brg');
         $outs->jumlah = $jml;
+        $outs->buyer = $request->get('buyer');
         $outs->tanggal = $request->get('tanggal');
         $outs->kategori = $ktg;
         
         $st->save();
         $outs->save();
-        return redirect('/keluar');
+        return redirect('/keluar')->with('toast_success','Data berhasil di ubah!');
     }
 
     /**
@@ -326,19 +344,19 @@ class OutController extends Controller
     public function destroy($id)
     {
         $outs = Out::findorfail($id);
-        $chart = Chart::where('bulan', '=', $outs->id_bulan)->where('brg_id', '=', $outs->id_brg)->first();
-        // $st = Stok::where('id', '=', $outs->stoks_id)->first();
-        // $st->stok += $outs->jumlah;
-        // $st->save();
-        $chart->delete();
+        // $chart = Chart::where('bulan', '=', $outs->id_bulan)->where('brg_id', '=', $outs->id_brg)->first();
+        // // $st = Stok::where('id', '=', $outs->stoks_id)->first();
+        // // $st->stok += $outs->jumlah;
+        // // $st->save();
+        // $chart->delete();
 		$outs->delete();
 
-		return redirect('/keluar')->with('toast_success','Data barang keluar berhasil dihapus!');
+		return redirect('/keluar')->with('toast_success','Data berhasil dihapus!');
     }
     function listbarang($items_id, Request $request){
 
         $barang= new Stok();
-        $barang = $barang->select('stoks.id','types_id','stok','types.jns_brg')
+        $barang = $barang->select('stoks.id','types_id','stok','types.jns_brg','hrg_jual')
                         ->where('stoks.items_id','=',$items_id)
                         ->join('types', 'types_id' , '=', 'types.id');
         return response()->json($barang->get());

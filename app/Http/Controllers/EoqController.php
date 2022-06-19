@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Type;
 use App\Eoq;
 use App\Hasilmetode;
-use DB;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class EoqController extends Controller
 {
@@ -29,9 +31,10 @@ class EoqController extends Controller
     public function create()
     {
         $types = Type::groupBy('items_id')->get('items_id');
-        $per = DB::table('periodes')->select('periode','jml_hari')->get();
+        // $per = DB::table('periodes')->select('periode','jml_hari')->get();
+        $profil = User::select('id','name','email')->where('id', '=', Auth::user()->id)->first();
 
-        return view('method.eoq.create', compact('types', 'per')); 
+        return view('method.eoq.create', compact('types', 'profil')); 
     }
 
     /**
@@ -45,7 +48,6 @@ class EoqController extends Controller
         $request->validate([
             'nm_brg'=> 'required',
             'jns_brg'=> 'required',
-            'jml_hari' => 'required',
             'periode' => 'required',
             'hrg_item'=> 'required',
             'by_simpan'=> 'required',
@@ -54,7 +56,6 @@ class EoqController extends Controller
         ]);
         $simpan = $request->by_simpan/100;
         $pesan = $request->by_pesan;
-        $periode = $request->jml_hari * $request->periode;
         $biayatotalpemesanan = $pesan * $request->permintaan;
         
         // $biayatotalsimpan = $simpan * $request->permintaan;
@@ -65,10 +66,10 @@ class EoqController extends Controller
         
         
         $jumlahorder = $request->permintaan / $result;
-        $leadtime = $periode / $jumlahorder;
+        $leadtime = $request->periode / $jumlahorder;
         
-        if($jumlahorder > $periode){
-            $coba = $periode/$jumlahorder;
+        if($jumlahorder > $request->periode){
+            $coba = $request->periode/$jumlahorder;
             $result2 = $result/$coba;
         }else{
             $result2 = sqrt($eoq);
@@ -80,9 +81,9 @@ class EoqController extends Controller
                 'tanggal' => date('Y-m-d'),
                 'barang_id' => request('nm_brg'),
                 'jenis_id' => request('jns_brg'),
-                'periode' => $periode,
+                'periode' => request('periode'),
                 'permintaan' => request('permintaan'),
-                'eoq' => round($result2),
+                'eoq' => round($result2, 2),
                 'frekuensi' => round($jumlahorder),
                 'leadtime' => round($leadtime),
             ]);
@@ -91,20 +92,20 @@ class EoqController extends Controller
         $eoqs = Eoq::create([
             'items_id' => request('nm_brg'),
             'types_id' => request('jns_brg'),
-            'periode' => $periode,
+            'periode' => request('periode'),
             'hrg_item' => request('hrg_item'),
             'by_simpan' => round($simpan),
             'by_pesan' => round($biayatotalpemesanan),
             'permintaan' => request('permintaan'),
-            'eoq' => round($result2),
+            'eoq' => round($result2, 2),
             'frekuensi' => round($jumlahorder),
             'leadtime' => round($leadtime),
             
         ]);
         $resultHitung->save();
         $eoqs->save();
-
-        return redirect('/eoq/create')->with('toast_success','Data berhasil tersimpan');
+        $profil = User::select('id','name','email')->where('id', '=', Auth::user()->id)->first();
+        return redirect('/eoq/create')->with('toast_success','Data berhasil tersimpan!');
     }
 
     /**
@@ -158,5 +159,5 @@ class EoqController extends Controller
                         ->where('types.items_id','=',$items_id)
                         ->join('items', 'items_id', '=', 'items.id');
         return response()->json($barang->get());
-    }
+    } 
 }

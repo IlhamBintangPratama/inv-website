@@ -18,6 +18,8 @@ use App\Http\Controllers\RopController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\HasilmetodeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Su_admin\ManaController;
+use App\Http\Controllers\Su_admin\Profile_AdmController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -38,8 +40,11 @@ Route::get('/', function () {
 Route::group(['middleware'=>'auth','ceklevel:1'], function () {
 // ;
     // Route::get('/dashboard', function(){return view('/dashboard');});
-    Route::get('dashboard', [StokController::class, 'index'])->name('dashboard');
-    Route::get('search', [StokController::class, 'index'])->name('dashboard');
+    Route::get('dashboard_admin', [StokController::class, 'index'])->name('dashboard_admin');
+    Route::get('search', [StokController::class, 'index'])->name('dashboard_admin');
+    Route::get('re_stok/{id}/getstok', [StokController::class, 'getStok']);
+    Route::post('re_stok/{id}/addrequest', [StokController::class, 're_stok'])->name('re_stok');
+    Route::post('permintaan/{permintaan}/destroy', [StokController::class, 'destroy']);
 //Data_Barang
 Route::get('barang', [ItemController::class, 'index'])->name('barang');
 Route::get('search-items', [ItemController::class, 'index'])->name('barang');
@@ -92,6 +97,7 @@ Route::get('/keluar/{keluar}/show', [OutController::class, 'show']);
 Route::post('/keluar/{keluar}/destroy', [OutController::class, 'destroy']);
 Route::get('keluar/listbarang/{items_id}', [OutController::class, 'listbarang']);
 
+
 //permintaan
 Route::get('permintaan', [RequestController::class, 'index'])->name('permintaan');
 Route::post('permintaan', [RequestController::class, 'store']);
@@ -113,14 +119,20 @@ Route::get('rop/pickeoq/{id}', [RopController::class, 'pickeoq']);
 Route::get('stok', [StokController::class, 'index'])->name('stok');
 Route::get('stok/create', [StokController::class, 'create']);
 Route::post('stok', [StokController::class, 'store']);
+Route::get('/stok/{stok}/edit', [StokController::class, 'edit']);
+Route::post('/stok/{stok}/update', [StokController::class, 'update']);
 Route::get('stok/listitems/{items_id}', [StokController::class, 'listitems']);
 
 Route::get('laporan-stok', [LapstoksController::class, 'index'])->name('laporan-stok');
+Route::get('laporan-stok/periode', [LapstoksController::class, 'periode'])->name('laporan-stok');
 Route::get('search-lap-stok', [LapstoksController::class, 'index'])->name('laporan-stok');
-Route::get('cetak-laporan-stok/{tgllaporan}', [LapstoksController::class, 'cetakLapStok'])->name('cetak-laporan-stok');
+Route::get('cetak-laporan-stok/{hasilfilter}', [LapstoksController::class, 'cetakLapStok'])->name('cetak-laporan-stok');
 
 Route::get('laporan-hasil-metode', [HasilmetodeController::class, 'index'])->name('laporan-hasil-metode');
-Route::get('cetak-hasil-perhitungan/{tglhasil}', [HasilmetodeController::class, 'cetakHasilMetode'])->name('cetak-hasil-perhitungan');
+Route::get('laporan-hasil-metode/periode', [HasilmetodeController::class, 'periode'])->name('laporan-hasil-metode');
+Route::get('cetak-hasil-perhitungan/{tglawal}/{tglakhir}', [HasilmetodeController::class, 'cetakHasilMetode'])->name('cetak-hasil-perhitungan');
+
+Route::post('laporan-hasil-metode', [HasilmetodeController::class, 'search'])->name('laporan-hasil-metode');
 // Route::get('/eoq/{eoq}/edit', [InController::class, 'edit']);
 // Route::post('/eoq/{eoq}/update', [InController::class, 'update']);
 // Route::get('/eoq/{eoq}/show', [InController::class, 'show']);
@@ -143,29 +155,58 @@ Route::group(['middleware'=>'auth','ceklevel:2'], function () {
         // Route::get('purchase/listriwayat/{tanggal}', [BelanjaController::class, 'listriwayat']);
         Route::get('purchase/riwayat-per/{tanggal}', [BelanjaController::class, 'listriwayat']);
         Route::get('cetak-riwayat-belanja/{tgl_riwayat}', [BelanjaController::class, 'cetakRiwayat'])->name('cetak-riwayat-belanja');
+        Route::post('purchase/riwayat/{suplier}/destroy', [BelanjaController::class, 'destroy2']);
         Route::get('purchase/kebutuhan', [BelanjaController::class, 'create2']);
+        Route::get('purchase/kebutuhan/{id}', [BelanjaController::class, 'status_update']);
         Route::get('purchase/tanggal-kebutuhan/{tanggal}', [BelanjaController::class, 'kebutuhan']);
         Route::get('purchase/profil', [BelanjaController::class, 'showProfil']);
         Route::post('profil', [BelanjaController::class, 'changeProfil'])->name('changeProfil');
+        Route::post('suplier', [BelanjaController::class, 'tambahSuplier'])->name('tambahSuplier');
+        Route::get('purchase/suplier', [BelanjaController::class, 'dataSuplier']);
+        Route::post('tambah_supplier', [BelanjaController::class, 'tambahSuplier2'])->name('tambahSuplier2');
+        Route::post('purchase/suplier/{suplier}/destroy', [BelanjaController::class, 'destroy']);
 
         Route::get('logout-user', [LoginController::class, 'logout'])->name('logout-user');
 });
 
 Route::group(['middleware'=>'auth','ceklevel:3'], function () {
     // ;
-        Route::get('m-dashboard', function(){return view('manager/dashmanager');});
-        // Route::get('purchase/index', [BelanjaController::class, 'create']);
-        // Route::post('purchase', [BelanjaController::class, 'store']);
-        // Route::get('purchase/listtypes/{items_id}', [BelanjaController::class, 'listtypes']);
-
+        // login super admin
+        Route::get('dashboard', [ManaController::class, 'index1'])->name('dashboard');
+        // managemen user
+        Route::get('mana_user', [ManaController::class, 'index'])->name('mana_user');
+        Route::get('search-user', [ManaController::class, 'index'])->name('mana_user');
+        Route::get('mana_user/create', [ManaController::class, 'create']);
+        Route::post('mana_user', [ManaController::class, 'store']);
+        Route::get('/mana_user/{mana_user}/edit', [ManaController::class, 'edit']);
+        Route::post('/mana_user/{mana_user}/update', [ManaController::class, 'update']);
+        Route::get('/mana_user/{mana_user}/show', [ManaController::class, 'show']);
+        Route::post('/mana_user/{mana_user}/destroy', [ManaController::class, 'destroy']);
+        //produk jual
+        Route::get('/produk_jual/{produk_jual}/edit', [ManaController::class, 'edit_jual']);
+        Route::post('/produk_jual/{produk_jual}/update', [ManaController::class, 'update_jual']);
+        //laporan masuk
+        Route::get('laporan-masuk', [ManaController::class, 'in_report'])->name('laporan-masuk');
+        Route::get('laporan-masuk/periode', [ManaController::class, 'periode'])->name('laporan-masuk');
+        Route::get('search-lap-masuk', [ManaController::class, 'in_report'])->name('laporan-masuk');
+        Route::get('cetak-laporan-masuk/{tglawal}/{tglakhir}', [ManaController::class, 'cetakMasuk'])->name('cetak-laporan-masuk');
+        //laporan keluar
+        Route::get('laporan-keluar', [ManaController::class, 'out_report'])->name('laporan-keluar');
+        Route::get('laporan-keluar/periode1', [ManaController::class, 'periode1'])->name('laporan-keluar');
+        Route::get('search-lap-keluar', [ManaController::class, 'out_report'])->name('laporan-keluar');
+        Route::get('cetak-laporan-keluar/{tglawal}/{tglakhir}', [ManaController::class, 'cetakKeluar'])->name('cetak-laporan-keluar');
+        //profile
+        Route::get('profile_adm', [Profile_AdmController::class, 'edit'])->name('profile_adm');
+        Route::post('profile_adm',[Profile_AdmController::class, 'changePassword1'])->name('changePassword1');
+        //logout
         Route::get('logout-user', [LoginController::class, 'logout'])->name('logout-user');
 });
 
-Route::view('forgot-password', 'auth.passwords.email')->name('password-password');
+Route::get('forgot-password', [ForgotPasswordController::class, 'getEmail'])->name('password-password');
 Route::post('forgot-password', [ForgotPasswordController::class, 'postEmail'])->name('forgot-pasword');
 
-Route::get('/reset-password/{token}', [ResetPasswordController::class, 'getPassword']);
-Route::post('/reset-password', [ResetPasswordController::class, 'updatePassword']);
+Route::get('reset-password/{token}', [ResetPasswordController::class, 'getPassword']);
+Route::post('reset-password', [ResetPasswordController::class, 'updatePassword'])->name('updatePassword');
 
 // Auth::routes();
 

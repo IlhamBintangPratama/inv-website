@@ -11,9 +11,9 @@
             <div class="navbar-nav ml-auto">
                 {{-- <a href="{{url('home')}}" class="nav-item nav-link">Home</a> --}}
                 <a href="{{url('home')}}" class="nav-item nav-link">Purchase Order</a>
-                <a href="{{url('purchase/kebutuhan')}}" class="nav-item nav-link">Kebutuhan Gudang</a>
+                <a href="{{url('purchase/kebutuhan')}}" class="nav-item nav-link">Permintaan Stok</a>
                 <a href="{{url('purchase/riwayat')}}" class="nav-item nav-link">Riwayat</a>
-                
+                <a href="{{url('purchase/suplier')}}" class="nav-item nav-link">Supplier</a>
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" onclick>Pengaturan</a>
                     <div class="dropdown-menu">

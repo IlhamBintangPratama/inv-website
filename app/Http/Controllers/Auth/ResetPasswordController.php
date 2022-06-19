@@ -30,14 +30,15 @@ class ResetPasswordController extends Controller
                         ->first();
 
     if(!$updatePassword)
-        return back()->withInput()->with('error', 'Invalid token!');
+        return back()->withInput()->with('toast_warning', 'Invalid token');
+    
 
-    $user = User::where('email', $request->email)
-                ->update(['password' => Hash::make($request->password)]);
-
+    $user = User::where('email', $request->email)->first();
+    $user->password = Hash::make($request->get('password_confirmation'));
+    $user->update();
     DB::table('password_resets')->where(['email'=> $request->email])->delete();
-
-    return redirect('/login')->with('message', 'Your password has been changed!');
+    
+    return redirect('/')->with('toast_success', 'Your password has been changed!');
 
     }
 }

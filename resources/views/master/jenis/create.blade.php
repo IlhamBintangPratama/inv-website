@@ -21,7 +21,7 @@
                     <fieldset >
                         <div class="form-group">
                             <label for="items_id">Nama Barang</label>
-                                <select id="items_id" name="items_id" class="form-control">
+                                <select id="items_id" name="items_id" class="form-control" required='required'>
                                 <option value="">- pilih -</option>
                                 @foreach(App\Item::all() as $item) 
                                 <option value="{{$item->id}}">
@@ -32,13 +32,10 @@
                                 @endforeach
                                 </select>
                         </div>
+                        
                         <div class="form-group">
-                            <label for="hrg_item">Harga:</label>
-                            <input class="form-control"  name="hrg_item" id="hrg_item" type="text" placeholder="Harga per item" autocomplete="off">
-                        </div>   
-                        <div class="form-group">
-                            <label for="jns_brg">Jenis Barang:</label>
-                            <input class="form-control"  name="jns_brg" id="jns_brg" type="text" placeholder="Jenis barang" autocomplete="off">
+                            <label for="jns_brg">Jenis Barang</label>
+                            <input class="form-control" name="jns_brg" id="jns_brg" type="text" placeholder="Jenis Barang" autocomplete="off" required>
                         </div>           
                         <button type="submit" class="btn btn-success">Save</button>
 
@@ -50,6 +47,16 @@
             </div>
         </div>
     </div>
+    <script>
+        function hanyaAngka(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode > 31 && (charCode < 48 || charCode > 57))
+    
+                return false;
+            return true;
+            
+		}
+    </script>
 </div>
 @endsection ('content')
 

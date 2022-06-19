@@ -114,6 +114,7 @@
         </div>
         </div>
     </div>
+    @include('sweetalert::alert')
     <!-- Footer -->
     <footer class="py-5" id="footer-main">
         <div class="container">

@@ -21,16 +21,16 @@
                     <fieldset >
                         <div class="form-group" {{ $errors->has('nm_brg') ? 'has-error' : '' }}>
                             <label for="nm_brg">Nama Barang</label>
-                            <input class="form-control"  name="nm_brg" id="nm_brg" type="text" placeholder="Nama Barang" value="{{ old('nm_brg', $items->nm_brg) }}" autocomplete="off">
+                            <input class="form-control"  name="nm_brg" id="nm_brg" type="text" placeholder="Nama Barang" value="{{ old('nm_brg', $items->nm_brg) }}" autocomplete="off" required='required'>
                         </div>
                     
                         <div class="form-group" {{ $errors->has('by_simpan') ? 'has-error' : '' }}>
                             <label for="by_simpan">Biaya Simpan (%)</label>
-                            <input class="form-control"  name="by_simpan" id="by_simpan" max="100" type="number" placeholder="Biaya simpan per Kg" value="{{ old('by_simpan', $items->by_simpan) }}" autocomplete="off">
+                            <input class="form-control"  name="by_simpan" id="by_simpan" max="100" type="number" onkeypress="return hanyaAngka(event)" placeholder="Biaya simpan per Kg" value="{{ old('by_simpan', $items->by_simpan) }}" autocomplete="off" required='required'>
                         </div>
                         <div class="form-group" {{ $errors->has('by_pesan') ? 'has-error' : '' }}>
                             <label for="by_pesan">Biaya Pesan</label>
-                            <input class="form-control"  name="by_pesan" id="by_pesan" type="number" placeholder="Biaya pesan per Kg" value="{{ old('by_pesan', $items->by_pesan) }}" autocomplete="off">
+                            <input class="form-control"  name="by_pesan" id="by_pesan" type="number" placeholder="Biaya pesan per Kg" onkeypress="return hanyaAngka(event)" value="{{ old('by_pesan', $items->by_pesan) }}" autocomplete="off" required='required'>
                         </div>
                         
                         
@@ -45,10 +45,19 @@
                         </div>
                     </fieldset>
                 </form>
-
-
             </div>
         </div>
+        <script>
+            function hanyaAngka(evt) {
+                var charCode = (evt.which) ? evt.which : event.keyCode
+                if (charCode > 31 && (charCode < 48 || charCode > 57))
+        
+                    return false;
+                return true;
+                
+            }
+        </script>
     </div>
 </div>
 @endsection ('content')
+@section('footer.script')

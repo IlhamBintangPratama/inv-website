@@ -31,14 +31,15 @@
                         <thead class="thead-light">
                             <tr>
                             <th>No</th>
-                            <th scope="col" class="sort" data-sort="name">Suplier</th>
+                            <th scope="col" class="sort" data-sort="name">Supplier</th>
                             <th scope="col" class="sort" data-sort="name">Tanggal</th>
                             <th scope="col" class="sort" data-sort="name">Nama Barang</th>
                             <th scope="col" class="sort" data-sort="name">Jenis</th>
                             <th scope="col" class="sort" data-sort="name">Harga Item</th>
                             <th scope="col" class="sort" style="width: 10%" data-sort="name">Stok Awal</th>
-                            <th scope="col" class="sort" data-sort="name">Jumlah (Kg)</th>
+                            <th scope="col" class="sort" data-sort="name">Jumlah</th>
                             <th scope="col" class="sort" data-sort="name">Total Harga</th>
+                            <th scope="col" class="sort" data-sort="name">Opsi</th>
                             </tr>
                         </thead>
                         <tbody class="list">
@@ -48,7 +49,7 @@
                                 {{$loop->iteration }}
                             </td>
                             <td class="budget">
-                                {{ $laps->suplier }}
+                                {{ $laps->suplier->name }}
                             </td>
                             <td class="budget">
                                 {{ $laps->tanggal }}
@@ -63,19 +64,36 @@
                                 {{ $laps->hrg_item }}
                             </td>
                             <td class="budget mr-5">
-                                {{ $laps->awal }}
+                                {{ $laps->awal }} Kg
                             </td>
                             <td class="budget">
-                                {{ $laps->jumlah }}
+                                {{ $laps->jumlah }} Kg
                             </td>
                             <td class="budget">
                                 Rp. {{ number_format($laps->total) }}
+                            </td>
+                            <td>  
+                                <form action="{{url('purchase/riwayat/'.$laps->id.'/destroy') }}" method="POST"
+                                    id="delete-form">
+                                    {{ csrf_field() }} 
+                                    
+                                    <button type="submit" class="btn-sm btn-danger" id="delete-btn" onclick="return confirm('Data yakin dihapus ?')" >
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                </form>
                             </td>
                             </tr>
                         @endforeach
                         </tbody>
                         </table>
                     </div>
+                    {{-- <div class="card-footer py-4">
+                        <nav aria-label="...">
+                            <ul class="pagination justify-content-end mb-0">
+                            {{ $riwayat->links()}}
+                            </ul>
+                        </nav>
+                    </div> --}}
                 </div>
         </div>
     </div>

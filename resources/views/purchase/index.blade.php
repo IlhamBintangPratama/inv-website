@@ -5,6 +5,58 @@
         <h1>Purchase Order</h1>
         <div class="row align-items-center mt-5 ">
             
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content" style="width: 100%;">
+                        <div class="modal-header">
+                            
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form class="form-horizontal" method="POST" action="{{ route('tambahSuplier') }}" autocomplete="off">
+                            {{ csrf_field() }}
+                                <div class="form-group">
+                                    <label for="suplier" class="col-md-4 control-label">Supplier</label>
+                                    <input class="form-control ml-3" style="width: 90%" name="suplier" id="suplier" type="text">
+                                </div>
+                                <div class="form-group">
+                                    <label for="no_telp" class="col-md-4 control-label">No. Telp</label>
+                                    <input class="form-control ml-3" style="width: 90%" name="no_telp" id="no_telp" onkeypress="return hanyaAngka(event)" type="number">
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-6 col-md-offset-4">
+                                        <button type="submit" class="btn btn-primary">
+                                            Simpan
+                                        </button>
+                                    </div>
+                                </div>
+                                <script>
+                                    $(document).ready(function(){
+                                        $("#email").attr("autocomplete", "off");
+                                        $("#new-password").attr("autocomplete", "off");
+                                        $("#new-password-confirm").attr("autocomplete", "off");
+                                    });
+                                </script>
+                        </form>
+                        {{-- <script>        
+                            function phoneno(evt){          
+                                $('#phone').keypress(function(e) {
+                                    var a = [];
+                                    var k = e.which;
+                    
+                                    for (i = 48; i < 58; i++)
+                                        a.Push(i);
+                    
+                                    if (!(a.indexOf(k)>=0))
+                                        e.preventDefault();
+                                });
+                            }
+                        </script> --}}
+                    </div>
+                </div>
+            </div>                 
             <div class="col-md-6">
                 <div class="contact-form" style="background: rgb(253, 253, 253);">
                     <div id="success"></div>
@@ -22,25 +74,31 @@
                                     <input class="form-control"  name="tgl-1" id="tgl-1" type="date" multiple value="{{date('Y-m-d')}}" disabled>
                                 </div>
                                 <div class="form-group">
-                                    <label for="suplier">Suplier</label>
-                                    <input class="form-control" name="suplier" id="suplier" type="text"
-                                        autocomplete="off" multiple>
+                                    <label for="suplier">Supplier</label>
+                                    <div class="form-inline">
+                                        <select name="suplier" id="suplier" class="form-control" style="width: 79%" required='required'>
+                                            <option value="">- pilih -</option>
+                                            @foreach ($suplier as $supl)
+                                            <option value="{{$supl->id}}">{{$supl->name}}</option>
+                                            @endforeach
+                                        </select>
+                                        
+                                        <button href="#" class="btn-primary ml-3" style="height: 35px; width: 80px;" data-toggle="modal" data-target="#exampleModal">Baru</button>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="nm_brg">Nama Barang</label>
-                                    <select name="nm_brg" id="nm_brg" class="form-control"
+                                    <select name="nm_brg" id="nm_brg" class="form-control" required='required'
                                         onchange="updateBarangpurc(this);">
                                         <option value="">- pilih -</option>
                                         @foreach ($awal as $stok)
                                         <option value="{{$stok->items_id}}">{{$stok->item->nm_brg}}</option>
                                         @endforeach
-
-
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="jns_brg">Jenis</label>
-                                    <select class='form-control' name='jns_brg' required='required' id='inp-jns'
+                                    <select class='form-control' name='jns_brg' required='required' id='inp-jns' required='required'
                                         onchange="getStock(this)">
                                     </select>
                                     {{-- <label for="jns_brg">Jenis</label>
@@ -72,7 +130,7 @@
                                                 url: 'listtypes/' + stok.value,
                                                 type: 'get',
                                                 dataType: 'json',
-                                                data:{'#nm_brg':stok.value},
+                                                data:{'nm_brg':stok.value},
                                                 beforeSend: function () {
                                                     $('#inp-jns').hide();
                                                     $('#inp-jns-status').show().html(
@@ -86,7 +144,7 @@
                                                         var options = "";
                                                         listTypes.forEach(function (item) {
                                                             options +=
-                                                                "<option  value='" +
+                                                                "<option id='jenis_barang' value='" +
                                                                 item.types_id + "'>" + item
                                                                 .jns_brg + "</option>"
                                                         });
@@ -113,9 +171,6 @@
                                                     $('#inp-jns-status').show().html(
                                                         "<strong>Kesalahan saat memuat data</strong>");
                                                     $('#inp-jns').hide();
-                                                    $('#awal-status').show().html(
-                                                        "<strong>Kesalahan saat memuat data</strong>");
-                                                    $('#awal').hide();
                                                 },
                                                 complete: function () {
 
@@ -138,7 +193,13 @@
                                             }
                                         })
                                     }
-
+                                function hanyaAngka(evt) {
+                                var charCode = (evt.which) ? evt.which : event.keyCode
+                                if (charCode > 31 && (charCode < 48 || charCode > 57))
+                        
+                                    return false;
+                                return true;
+                                }
                                 </script>
                                 {{-- <div class="form-group">
                                         <label for="jns_brg">Jenis:</label>
@@ -151,14 +212,14 @@
                             </div> --}}
                             <div class="form-group">
                                 <label for="jumlah">QTY</label>
-                                <input class="form-control" name="jumlah" id="jumlah" type="number"
-                                    autocomplete="off" multiple>
+                                <input class="form-control" name="jumlah" id="jumlah" onkeypress="return hanyaAngka(event)" type="number" style="height: 45px;"
+                                    autocomplete="off" multiple required='required'>
                             </div>
                             
                             <div class="form-group">
-                                <label for="hrg_item">Harga</label>
-                                <input class="form-control" name="hrg_item" id="hrg_item" type="number"
-                                    autocomplete="off" multiple>
+                                <label for="hrg_item">Harga Beli</label>
+                                <input class="form-control" name="hrg_item" id="hrg_item" onkeypress="return hanyaAngka(event)" type="number" style="height: 45px;
+                                    autocomplete="off" multiple required='required'>
                             </div>
                             <hr>
                 </div>
@@ -177,7 +238,7 @@
             box-shadow: 0 0 30px rgba(0, 0, 0, .1);
             }
         </style>
-        <div class="row align-items-center" style="margin-top: -70.8%;">
+        <div class="row align-items-center" style="margin-top: -71.8%;">
             <div class="col-md-6" style="margin-left: 50%;">
                 <div class="table-responsive table-shadow" style="">
                     {{-- <table class="table align-items-center table-flush">
@@ -216,7 +277,7 @@
                             {{ $rincian->firstItem()+$no}} 
                         </td>
                         <td class="budget">
-                            {{ $laps->suplier }}
+                            {{ $laps->suplier->name }}
                         </td>
                         <td class="budget">
                             {{ $laps->brg1->nm_brg }}

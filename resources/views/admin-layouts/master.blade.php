@@ -45,7 +45,7 @@
   @yield('content')
   @else
   @include ('login')
-  
+  @include('sweetalert::alert')
   @endif
 
  <!-- jQuery -->

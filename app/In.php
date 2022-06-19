@@ -15,7 +15,7 @@ class In extends Model
         'tanggal',
         'hrg_item',
         'total',
-        'suplier'
+        'suplier_id'
     ];
     public function stokk() {
 
@@ -28,5 +28,9 @@ class In extends Model
     public function jns1() {
 
         return $this->belongsTo('App\Type', 'jns_brg1', 'id');
+    }
+    public function suplier() {
+
+        return $this->belongsTo('App\Suplier', 'suplier_id', 'id');
     }
 }

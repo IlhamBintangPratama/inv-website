@@ -3,7 +3,75 @@
 @section ('content')
 <div class="main-content" id="panel">
     <!-- Topnav -->
-    @include ('admin-layouts.top')
+<nav class="navbar navbar-top navbar-expand navbar-dark bg-primary border-bottom">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <!-- Search form -->
+        <form action="{{ url('search-outstok')}}" class="navbar-search navbar-search-light form-inline mr-sm-3" id="navbar-search-main" method="GET">
+            <div class="form-group mb-0">
+            <div class="input-group input-group-alternative input-group-merge">
+                <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                </div>
+                <input name="keyword" class="form-control" placeholder="Cari berdasarkan nama" type="text">
+            </div>
+            </div>
+            <button type="submit" class="btn btn-primary mb-2" data-target="#navbar-search-main" aria-label="Close">
+            
+            </button>
+        </form>
+        <!-- Navbar links -->
+        <ul class="navbar-nav align-items-center  ml-md-auto ">
+            <li class="nav-item d-xl-none">
+            <!-- Sidenav toggler -->
+            <div class="pr-3 sidenav-toggler sidenav-toggler-dark" data-action="sidenav-pin" data-target="#sidenav-main">
+                <div class="sidenav-toggler-inner">
+                <i class="sidenav-toggler-line"></i>
+                <i class="sidenav-toggler-line"></i>
+                <i class="sidenav-toggler-line"></i>
+                </div>
+            </div>
+            </li>
+            <li class="nav-item d-sm-none">
+            <a class="nav-link" href="#" data-action="search-show" data-target="#navbar-search-main">
+                <i class="ni ni-zoom-split-in"></i>
+            </a>
+            </li>
+            
+            
+        </ul>
+        <ul class="navbar-nav align-items-center  ml-auto ml-md-0 ">
+            <li class="nav-item dropdown">
+            <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <div class="media align-items-center">
+                <span class="avatar avatar-sm rounded-circle">
+                    <img alt="Image placeholder" src="../../assets/img/theme/team-4.jpg">
+                </span>
+                <div class="media-body  ml-2  d-none d-lg-block">
+                    <span class="mb-0 text-sm  font-weight-bold">{{$profil->name}}</span>
+                </div>
+                </div>
+            </a>
+            <div class="dropdown-menu  dropdown-menu-right ">
+                <div class="dropdown-header noti-title">
+                <h6 class="text-overflow m-0">Welcome!</h6>
+                </div>
+                <a href="{{ url('profile_adm')}}" class="dropdown-item">
+                <i class="ni ni-single-02"></i>
+                <span>My profile</span>
+                </a>
+                
+                <div class="dropdown-divider"></div>
+                <a href="{{ url('logout')}}" class="dropdown-item">
+                <i class="ni ni-user-run"></i>
+                <span>Logout</span>
+                </a>
+            </div>
+            </li>
+        </ul>
+        </div>
+    </div>
+    </nav>
     <div id="page-wrapper" class="container-fluid ml-3 mt-4">
         <div class="row">
             <div class="col">
@@ -47,19 +115,24 @@
                                     </select>
                                 </div> --}}
                                 <div class="form-group">
+                                    <label for="buyer">Buyer</label>
+                                    <input class="form-control" name="buyer" id="buyer" type="text"
+                                        autocomplete="off" required multiple>
+                                </div>
+                                <div class="form-group">
                                     <label for="nm_brg">Nama Barang</label>
                                     <select name="nm_brg" id="nm_brg" class="form-control"
                                         onchange="updateBarang(this);">
                                         <option value="">- pilih -</option>
-                                        @foreach ($stokss as $stoks)
-                                        <option value="{{$stoks->items_id}}">{{$stoks->itemsss->nm_brg}}</option>
+                                        @foreach ($stokss as $stk)
+                                        <option value="{{$stk->items_id}}">{{$stk->itemsss->nm_brg}}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label for="jns_brg">Jenis</label>
                                     <select class='form-control' name='jns_brg' required='required' id='input-barang'
-                                        style="display:none;" onchange="getStock(this)">
+                                        onchange="getStock(this)">
                                     </select>
 
                                     <span class="help-block" id='input-barang-status' style="display:none;">
@@ -68,25 +141,34 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="awal">Awal</label>
-                                    <input class="form-control"  name="awal" id="awal" type="text" style="display:none;"  multiple hidden>
+                                    <input class="form-control"  name="awal" id="awal" type="text"  multiple hidden>
                                     {{-- <div id="awal_stoks"></div> --}}
                                     <input class="form-control"  name="awal-1" id="awal-1" type="text" style="display:none;"  multiple disabled>
                                     <span class="help-block" id='awal-status' style="display:none;">
                                         Silahkan pilih barang.
                                     </span>
                                 </div>
+                                <div class="form-group">
+                                    <label for="hrg_jual">Harga Jual</label>
+                                    <input class="form-control"  name="hrg_jual" id="hrg_jual" type="number" multiple>
+                                    {{-- <div id="awal_stoks"></div> --}}
+                                    <input class="form-control"  name="hrg_jual-1" id="hrg_jual-1" type="number" style="display:none;"  multiple disabled>
+                                    <span class="help-block" id='hrg_jual-status' style="display:none;">
+                                        Silahkan pilih barang.
+                                    </span>
+                                </div>
                                 <script>
                                 var listBarang;
-                                function updateBarang(stoks){
-                                    if(stoks.value==''){
+                                function updateBarang(stk){
+                                    if(stk.value==''){
                                         $('#input-barang-status').show().html("Pilih barang terlebih dahulu.");
                                         $('#input-barang').hide();
                                     }else{
                                         $.ajax({
-                                            url:'listbarang/'+stoks.value,
+                                            url:'listbarang/'+stk.value,
                                             type:'get',
                                             dataType:'json',
-                                            data:{'nm_brg':stoks.value},
+                                            data:{'nm_brg':stk.value},
                                             beforeSend:function(){
                                                 $('#input-barang').hide();
                                                 $('#input-barang-status').show().html("<strong><i class='fa fa-spinner fa-spin'></i> Memuat list jenis barang</strong>");
@@ -129,7 +211,9 @@
                                             success : function(data){
                                                 let newData = data.find((item) => item.types_id == jenis.value)
                                                 $('#awal').val(newData.stok).show(),
-                                                $('#awal-1').val(newData.stok).show()
+                                                $('#awal-1').val(newData.stok).show(),
+                                                $('#hrg_jual').val(newData.hrg_jual).show(),
+                                                $('#hrg_jual-1').val(newData.hrg_jual).show()
                                             }
                                         })
                                     }
@@ -160,7 +244,13 @@
                                         document.getElementById('total-b-1').value = result;
                                     }
                                 }
-
+                                function hanyaAngka(evt) {
+                                var charCode = (evt.which) ? evt.which : event.keyCode
+                                if (charCode > 31 && (charCode < 48 || charCode > 57))
+                        
+                                    return false;
+                                return true;
+                                }
                                 </script>
                                 {{-- <div class="form-group">
                                     <label for="jns_brg">Jenis:</label>
@@ -173,7 +263,7 @@
                             </div> --}}
                             <div class="form-group">
                                 <label for="tanggal">Tanggal</label>
-                                <input class="form-control" name="tanggal" id="tanggal" type="date"
+                                <input class="form-control" name="tanggal" id="tanggal" type="date" value="{{date('Y-m-d')}}"
                                     multiple>
                             </div>
                             
@@ -189,12 +279,12 @@
                             </div>
                             <div class="form-group" id="tes">
                                 <label for="jumlah">QTY</label>
-                                <input class="form-control" name="jumlah" id="jumlah" type="number"
+                                <input class="form-control" name="jumlah" id="jumlah" onkeypress="return hanyaAngka(event)" type="number"
                                     autocomplete="off" multiple>
                             </div>
                             <div class="form-group" id="box" style="display: none;">
                                 <label for="jumlah-paking">QTY</label><br>
-                                <input class="form-control" name="jum-pak" id="jum-pak" type="number" onkeyup="sum();">
+                                <input class="form-control" name="jum-pak" id="jum-pak" onkeypress="return hanyaAngka(event)" type="number" onkeyup="sum();">
                                 <input class="form-control" name="jum-pak-1" id="jum-pak-1" type="number" value="5" onkeyup="sum();" hidden>
                             </div>
                             <div class="form-group" id="box1" style="display: none;">
@@ -208,7 +298,7 @@
                     <button class="btn btn-success" type="submit"> Simpan</button>
 
                     <a href="{{ url('keluar') }}" class="btn btn-default">Keluar</a>
-                    {{-- <button class="btn btn-primary" id="btn-plus" type="button" onclick="tambah_form()"><i
+                    {{-- <button class="btn btn-primary" id="btn-plus" type="button" onclick="tambah_row()"><i
                             class="fa fa-plus mr-2"></i></button> --}}
                 </div>
 
@@ -220,7 +310,7 @@
         </div>
 
         <script>
-            function tambah_form() {
+            function tambah_row() {
                 let elListCheckout = $('#list-Checkout');
                 let list = elListCheckout.children();
                 let count_checkout = list.length
@@ -261,6 +351,7 @@
         </script>
     </div>
 </div>
+@include('sweetalert::alert')
 @endsection ('content')
 @section('footer.script')
 {{-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script>

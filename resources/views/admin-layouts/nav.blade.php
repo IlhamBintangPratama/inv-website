@@ -2,8 +2,8 @@
     <div class="scrollbar-inner">
       <!-- Brand -->
       <div class="sidenav-header" >
-        <a class="navbar-brand" href="/dashboard">
-          <img src="{{asset('assets/img/brand/logo1.png')}}" class="navbar-brand-img" height="79" width="69%" alt="...">
+        <a class="navbar-brand" href="/dashboard_admin">
+          <img src="{{asset('assets/img/brand/logo1.png')}}" class="navbar-brand-img" alt="...">
         </a>
       </div>
       <div class="navbar-inner">
@@ -17,7 +17,7 @@
           <!-- Nav items -->
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a class="nav-link" href="/dashboard">
+              <a class="nav-link" href="/dashboard_admin">
                 <i class="ni ni-shop text-dark"></i>
                 <span class="nav-link-text">Dashboard</span>
               </a>

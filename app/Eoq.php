@@ -16,7 +16,8 @@ class Eoq extends Model
         'permintaan',
         'eoq',
         'frekuensi',
-        'leadtime'
+        'leadtime',
+        'status'
     ];
     public function typ_items() {
 

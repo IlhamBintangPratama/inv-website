@@ -7,6 +7,7 @@ use App\Stok;
 use App\Type;
 use App\Item;
 use App\User;
+use Auth;
 use Illuminate\Http\Request;
 
 class InController extends Controller
@@ -64,8 +65,8 @@ class InController extends Controller
     public function show($id)
     {
         $ins = In::findorfail($id);
-
-        return view('transaksi.masuk.show', compact('ins'));
+        $profil = User::select('id','name','email')->where('id', '=', Auth::user()->id)->first();
+        return view('transaksi.masuk.show', compact('ins','profil'));
     }
 
     /**
@@ -79,7 +80,8 @@ class InController extends Controller
         $ins = In::find($id);
         $stokss = Type::groupBy('items_id')->get('items_id');
         $stks = Type::all();
-        return view('transaksi.masuk.edit', compact('ins','stokss', 'stks'));
+        $profil = User::select('id','name','email')->where('id', '=', Auth::user()->id)->first();
+        return view('transaksi.masuk.edit', compact('ins','stokss', 'stks', 'profil'));
     }
 
     /**
@@ -118,7 +120,7 @@ class InController extends Controller
         
         $st->save();
         $ins->save();
-        return redirect('/masuk');
+        return redirect('/masuk')->with('toast_success','Data berhasil di ubah!');
     }
 
     /**
@@ -135,7 +137,7 @@ class InController extends Controller
         // $st->save();
 		$ins->delete();
 
-		return redirect('/masuk')->with('status','Data barang masuk berhasil dihapus!');
+		return redirect('/masuk')->with('toast_warning','Data berhasil dihapus!');
     }
     function editmasuk($items_id, Request $request){
 

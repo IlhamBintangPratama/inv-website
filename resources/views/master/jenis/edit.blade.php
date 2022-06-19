@@ -22,23 +22,16 @@
                         <div class="form-group">
                             <label for="items_id">Nama Barang</label>
                                 <select id="items_id" name="items_id" class="form-control">
-                                <option value="">- pilih -</option>
-                                @foreach(App\Item::all() as $item) 
-                                <option  value="{{$item->id}}" selected>
-    
-                                {{$item->nm_brg}}
-    
-                                </option>
-                                @endforeach
+                                    <option value="">- pilih -</option>
+                                    @foreach ($items as $itm)
+                                    <option {{$types->items_id == $itm->items_id ? 'selected' :''}} value="{{$itm->items_id}}">{{$itm->itemsss->nm_brg}}</option>
+                                    @endforeach
                                 </select>
                         </div>
-                        <div class="form-group">
-                            <label for="hrg_item">Harga</label>
-                            <input class="form-control"  name="hrg_item" id="hrg_item" type="number" autocomplete="off" placeholder="Harga per item" value="{{ old('hrg_item', $types->hrg_item) }}">
-                        </div>  
+                        
                         <div class="form-group" {{ $errors->has('jns_brg') ? 'has-error' : '' }}>
                             <label for="jns_brg">Jenis Barang</label>
-                            <input class="form-control"  name="jns_brg" id="jns_brg" type="text" autocomplete="off" placeholder="Jenis barang" value="{{ old('jns_brg', $types->jns_brg) }}">
+                            <input class="form-control"  name="jns_brg" id="jns_brg" type="text" autocomplete="off" placeholder="Jenis barang" value="{{ old('jns_brg', $types->jns_brg) }}" required>
                         </div>
                         <div class="form-group">
                             
@@ -54,5 +47,15 @@
             </div>
         </div>
     </div>
+    <script>
+        function hanyaAngka(evt) {
+            var charCode = (evt.which) ? evt.which : event.keyCode
+            if (charCode > 31 && (charCode < 48 || charCode > 57))
+    
+                return false;
+            return true;
+            
+		}
+    </script>
 </div>
 @endsection ('content')

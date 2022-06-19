@@ -3,7 +3,75 @@
 @section ('content')
 <div class="main-content" id="panel">
     <!-- Topnav -->
-    @include ('admin-layouts.top')
+<nav class="navbar navbar-top navbar-expand navbar-dark bg-primary border-bottom">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <!-- Search form -->
+        {{-- <form action="{{ url('search-user')}}" class="navbar-search navbar-search-light form-inline mr-sm-3" id="navbar-search-main" method="GET">
+            <div class="form-group mb-0">
+            <div class="input-group input-group-alternative input-group-merge">
+                <div class="input-group-prepend">
+                <span class="input-group-text"><i class="fas fa-search"></i></span>
+                </div>
+                <input name="keyword" class="form-control" placeholder="Cari berdasarkan email" type="text">
+            </div>
+            </div>
+            <button type="submit" class="btn btn-primary mb-2" data-target="#navbar-search-main" aria-label="Close">
+            
+            </button>
+        </form> --}}
+        <!-- Navbar links -->
+        <ul class="navbar-nav align-items-center  ml-md-auto ">
+            <li class="nav-item d-xl-none">
+            <!-- Sidenav toggler -->
+            <div class="pr-3 sidenav-toggler sidenav-toggler-dark" data-action="sidenav-pin" data-target="#sidenav-main">
+                <div class="sidenav-toggler-inner">
+                <i class="sidenav-toggler-line"></i>
+                <i class="sidenav-toggler-line"></i>
+                <i class="sidenav-toggler-line"></i>
+                </div>
+            </div>
+            </li>
+            <li class="nav-item d-sm-none">
+            <a class="nav-link" href="#" data-action="search-show" data-target="#navbar-search-main">
+                <i class="ni ni-zoom-split-in"></i>
+            </a>
+            </li>
+            
+            
+        </ul>
+        <ul class="navbar-nav align-items-center  ml-auto ml-md-0 ">
+            <li class="nav-item dropdown">
+            <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <div class="media align-items-center">
+                <span class="avatar avatar-sm rounded-circle">
+                    <img alt="Image placeholder" src="../../assets/img/theme/team-4.jpg">
+                </span>
+                <div class="media-body  ml-2  d-none d-lg-block">
+                    <span class="mb-0 text-sm  font-weight-bold">{{$profil->name}}</span>
+                </div>
+                </div>
+            </a>
+            <div class="dropdown-menu  dropdown-menu-right ">
+                <div class="dropdown-header noti-title">
+                <h6 class="text-overflow m-0">Settings</h6>
+                </div>
+                <a href="{{ url('profile')}}" class="dropdown-item">
+                <i class="ni ni-single-02"></i>
+                <span>My profile</span>
+                </a>
+                
+                <div class="dropdown-divider"></div>
+                <a href="{{ url('logout')}}" class="dropdown-item">
+                <i class="ni ni-user-run"></i>
+                <span>Logout</span>
+                </a>
+            </div>
+            </li>
+        </ul>
+        </div>
+    </div>
+    </nav>
 <div id="page-wrapper" class="container-fluid ml-3 mt-4">
     <div class="row">
         <div class="col-lg-12">
@@ -21,30 +89,17 @@
                     <fieldset >
                         <div class="form-group">
                             <label for="periode">Periode</label>
-                            <select class="form-control mb-2"  name="jml_hari" id="jml_hari">
+                            <select class="form-control mb-2"  name="periode" id="periode">
                                 <option value="">- pilih -</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                                <option value="5">5</option>
-                                <option value="6">6</option>
-                                <option value="7">7</option>
-                                <option value="8">8</option>
-                                <option value="9">9</option>
-                            </select>
-                            
-                            <select name="periode" id="periode" class="form-control">
-                                <option value="">- pilih -</option>
-                                @foreach ($per as $prd)
-                                <option value="{{$prd->jml_hari}}">{{$prd->periode}}</option>
-                                    @endforeach
+                                <option value="90">3 Bulan</option>
+                                <option value="180">6 Bulan</option>
+                                <option value="360">12 Bulan</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="nm_brg">Nama Barang</label>
                             <select name="nm_brg" id="nm_brg" class="form-control"
-                                onchange="pickType(this);">
+                                onchange="pickType(this);" required='required'>
                                 <option value="">- pilih -</option>
                                 @foreach ($types as $type)
                                 <option value="{{$type->items_id}}">{{$type->itemsss->nm_brg}}</option>
@@ -54,7 +109,7 @@
                         <div class="form-group">
                             <label for="jns_brg">Jenis</label>
                             <select class='form-control' name='jns_brg' required='required' id='input-jeniss'
-                                style="display:none;" onchange="getHarga(this)">
+                                onchange="getHarga(this)">
                             </select>
                             <br>
                             <span class="help-block" id='input-jeniss-status' style="display:none;">
@@ -118,25 +173,34 @@
                                             }
                                         })
                                     }
-                            </script>
+                            
+                            function hanyaAngka(evt) {
+                                var charCode = (evt.which) ? evt.which : event.keyCode
+                                if (charCode > 31 && (charCode < 48 || charCode > 57))
+                        
+                                    return false;
+                                return true;
+                                
+                            }
+                        </script>
                         <div class="form-group">
-                            <label for="hrg_item">Harga Item</label>
-                            <input class="form-control"  name="hrg_item" id="hrg_item" type="number" autocomplete="off" multiple>
+                            
+                            <input class="form-control"  name="hrg_item" id="hrg_item" type="number" autocomplete="off" multiple required hidden>
                             {{-- <div id="awal_stoks"></div> --}}
                         </div>
                         <div class="form-group">
-                            <label for="by_simpan">Biaya Simpan (%)</label>
-                            <input class="form-control"  name="by_simpan" id="by_simpan" max="100" type="number" autocomplete="off" multiple>
+                            
+                            <input class="form-control"  name="by_simpan" id="by_simpan" max="100" type="number" autocomplete="off" multiple hidden>
                             {{-- <div id="awal_stoks"></div> --}}
                         </div>
                         <div class="form-group">
-                            <label for="by_pesan">Biaya Pesan</label>
-                            <input class="form-control"  name="by_pesan" id="by_pesan" type="number" autocomplete="off" multiple>
+                            
+                            <input class="form-control"  name="by_pesan" id="by_pesan" type="number" autocomplete="off" multiple required hidden>
                             {{-- <div id="awal_stoks"></div> --}}
                         </div>
                         <div class="form-group">
                             <label for="permintaan">Permintaan (Kg)</label>
-                            <input class="form-control"  name="permintaan" id="permintaan" type="number" placeholder="Jumlah permintaan barang" autocomplete="off">
+                            <input class="form-control"  name="permintaan" id="permintaan" type="number" onkeypress="return hanyaAngka(event)" placeholder="Jumlah permintaan barang" autocomplete="off" required>
                         </div>
                         <button type="submit" class="btn btn-success">Save</button>
 
@@ -150,6 +214,7 @@
     </div>
 </div>
 @include('sweetalert::alert')
+
 @endsection ('content')
 
 
