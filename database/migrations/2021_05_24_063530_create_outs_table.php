@@ -15,11 +15,16 @@ class CreateOutsTable extends Migration
     {
         Schema::create('outs', function (Blueprint $table) {
             $table->increments('id', true);
-            $table->string('nm_brg');
-            $table->string('jns_brg');
-            $table->string('jumlah');
+            $table->integer('id_bulan');
+            $table->integer('id_brg');
+            $table->integer('jns_id');
+            $table->float('jumlah');
             $table->string('tanggal');
-            $table->string('kategori');
+            $table->string('hrg_jual');
+            $table->integer('stoks_id');
+            $table->string('buyer');
+            $table->integer('total');
+            $table->integer('kategori')->default(0);
             $table->timestamps();
         });
         // Schema::table('outs', function (Blueprint $table) {

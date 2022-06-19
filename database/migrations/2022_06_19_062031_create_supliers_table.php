@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTypesTable extends Migration
+class CreateSupliersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,11 @@ class CreateTypesTable extends Migration
      */
     public function up()
     {
-        Schema::create('types', function (Blueprint $table) {
+        Schema::create('supliers', function (Blueprint $table) {
             $table->increments('id', true);
-            $table->integer('items_id')->unsigned();
-            $table->string('jns_brg');
-            $table->integer('hrg_item')->default(0)->nullable();
+            $table->string('name');
+            $table->string('no_telp');
             $table->timestamps();
-
-            $table->foreign('items_id')->references('id')->on('items')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 
@@ -31,6 +28,6 @@ class CreateTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('types');
+        Schema::dropIfExists('supliers');
     }
 }

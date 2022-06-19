@@ -15,11 +15,15 @@ class CreateInsTable extends Migration
     {
         Schema::create('ins', function (Blueprint $table) {
             $table->increments('id', true);
-            $table->string('nm_brg');
-            $table->string('jns_brg');
-            $table->string('jumlah');
+            $table->integer('stoks_id');
+            $table->integer('nm_brg1');
+            $table->integer('jns_brg1');
+            $table->float('jumlah');
             $table->string('tanggal');
             $table->string('hrg_item');
+            $table->integer('awal');
+            $table->integer('suplier_id');
+            $table->integer('total');
             $table->timestamps();
         });
     }

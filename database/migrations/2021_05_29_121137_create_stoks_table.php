@@ -19,6 +19,9 @@ class CreateStoksTable extends Migration
             $table->integer('items_id')->unsigned();
             $table->integer('types_id')->unsigned();
             $table->string('stok');
+            $table->integer('reorder');
+            $table->integer('hrg_jual')->nullable();
+            $table->integer('hrg_beli')->nullable();
             $table->timestamps();
 
             $table->foreign('items_id')->references('id')->on('items')->onDelete('cascade')->onUpdate('cascade');

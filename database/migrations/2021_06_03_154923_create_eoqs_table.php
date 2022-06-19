@@ -15,14 +15,17 @@ class CreateEoqsTable extends Migration
     {
         Schema::create('eoqs', function (Blueprint $table) {
             $table->increments('id', true);
-            $table->date('tanggal');
+            $table->string('periode');
             $table->integer('items_id')->unsigned();
             $table->integer('types_id')->unsigned();
             $table->string('hrg_item');
             $table->string('by_pesan');
             $table->string('by_simpan');
             $table->string('permintaan');
-            $table->string('eoq');
+            $table->float('eoq');
+            $table->integer('frekuensi');
+            $table->integer('leadtime');
+            $table->integer('status')->default(1);
             $table->timestamps();
 
             $table->foreign('items_id')->references('id')->on('items')->onDelete('cascade')->onUpdate('cascade');

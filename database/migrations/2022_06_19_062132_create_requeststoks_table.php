@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateLapstoksTable extends Migration
+class CreateRequeststoksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateLapstoksTable extends Migration
      */
     public function up()
     {
-        Schema::create('lapstoks', function (Blueprint $table) {
+        Schema::create('requeststoks', function (Blueprint $table) {
             $table->increments('id', true);
+            $table->integer('idbarang');
+            $table->integer('idjenis');
+            $table->float('jumlah');
             $table->date('tanggal');
-            $table->integer('id_barang')->unsigned();
-            $table->integer('id_jenis')->unsigned();
-            $table->string('awal');
-            $table->string('stok_masuk')->default(0)->nullable();
-            $table->string('stok_keluar')->default(0)->nullable();
-            $table->string('akhir');
+            $table->integer('waktu_pemesanan');
+            $table->integer('frekuensi');
+            $table->integer('status')->default(0);
             $table->timestamps();
         });
     }
@@ -33,6 +33,6 @@ class CreateLapstoksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('lapstoks');
+        Schema::dropIfExists('requeststoks');
     }
 }
