@@ -25,6 +25,7 @@ class CreateInsTable extends Migration
             $table->integer('suplier_id');
             $table->integer('total');
             $table->timestamps();
+            
         });
     }
 
