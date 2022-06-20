@@ -25,7 +25,7 @@ class Handler extends ExceptionHandler
         'password',
         'password_confirmation',
     ];
-
+    
     /**
      * Report or log an exception.
      *
