@@ -18,7 +18,7 @@ class CreateStoksTable extends Migration
             $table->date('tanggal');
             $table->integer('items_id')->unsigned();
             $table->integer('types_id')->unsigned();
-            $table->string('stok')->default(0);
+            $table->integer('stok')->default(0);
             $table->integer('reorder');
             $table->integer('hrg_jual')->nullable();
             $table->integer('hrg_beli')->nullable();
