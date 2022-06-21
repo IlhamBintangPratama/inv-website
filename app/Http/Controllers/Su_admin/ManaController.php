@@ -33,7 +33,7 @@ class ManaController extends Controller
         $profil = User::select('name','level')->where('level', '=', 3)->first();
         // $role = User::select('level')->whereBetween('level', [1 , 2]);
 
-        return view('manager.mana_user.index', compact('mana_user','profil', 'role'));
+        return view('manager.mana_user.index', compact('mana_user','profil'));
     }
 
     public function index1(){
@@ -55,7 +55,7 @@ class ManaController extends Controller
         // }
         $profil = User::select('name','level')->where('level', '=', 3)->first();
 
-        return view('manager.dashmanager', compact('kapasitas', 'profil', 'stoks', 'data'));
+        return view('manager.dashmanager', compact('kapasitas', 'profil', 'stoks'));
     }
     
     /**
