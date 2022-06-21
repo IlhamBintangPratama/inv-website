@@ -3,8 +3,8 @@
      #   Options -MultiViews -Indexes
     #</IfModule>
 
-    #RewriteEngine On
-    RewriteEngine on
+    RewriteEngine On
+    #RewriteEngine on
     RewriteRule ^$ public/ [L]
     RewriteRule (.*) public/$1 [L]
 
