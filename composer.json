@@ -52,6 +52,7 @@
     "prefer-stable": true,
     "scripts": {
         "post-autoload-dump": [
+           
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "if test -f 'storage/oauth-public.key'; then @php artisan package:discover --ansi; fi"
         ],
