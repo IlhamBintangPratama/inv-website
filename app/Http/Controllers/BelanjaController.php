@@ -272,7 +272,7 @@ class BelanjaController extends Controller
     {
         $request->validate([
             'suplier' => 'required',
-            'no_telp' => 'required|digits:10',
+            'no_telp' => 'required|regex:/^([0-9\s\-\+\(\)]*)$/|min:10',
             // 'hrg_item' => 'required',
         ]);
 

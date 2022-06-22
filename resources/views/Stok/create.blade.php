@@ -144,8 +144,14 @@
                                 });
 
                             }
-                            
                         }
+                        function hanyaAngka(evt) {
+                                var charCode = (evt.which) ? evt.which : event.keyCode
+                                if (charCode > 31 && (charCode < 48 || charCode > 57))
+                        
+                                    return false;
+                                return true;
+                            }
                         </script>
                         {{-- <div class="form-group">
                             <label for="stok">Jumlah Stok (Kg)</label>
@@ -153,7 +159,7 @@
                         </div> --}}
                         <div class="form-group">
                             <label for="stok">Safety Stok</label>
-                            <input class="form-control"  name="safety_stok" id="safety_stok" type="number" placeholder="Jumlah stok aman(Kg)" required='required'>
+                            <input class="form-control"  name="safety_stok" onkeypress="return hanyaAngka(event)" id="safety_stok" type="number" placeholder="Jumlah stok aman(Kg)" required='required'>
                         </div>
                         
                         <button type="submit" class="btn btn-success">Save</button>
