@@ -150,7 +150,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="hrg_jual">Harga Jual</label>
-                                    <input class="form-control"  name="hrg_jual" id="hrg_jual" type="number" multiple>
+                                    <input class="form-control"  name="hrg_jual" id="hrg_jual" type="number" multiple hidden>
                                     {{-- <div id="awal_stoks"></div> --}}
                                     <input class="form-control"  name="hrg_jual-1" id="hrg_jual-1" type="number" style="display:none;"  multiple disabled>
                                     <span class="help-block" id='hrg_jual-status' style="display:none;">
