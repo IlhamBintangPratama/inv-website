@@ -86,10 +86,10 @@
                         <label class="control-label" for="title">Email</label>
                         <input  id="email" type="email" name="email" class="form-control"  placeholder="Post Title ..." value="{{ old('email', $mana_user->email) }}" disabled>
                     </div>
-                    <div class="form-group {{ $errors->has('password') ? 'has-error' : '' }}">
+                    {{-- <div class="form-group {{ $errors->has('password') ? 'has-error' : '' }}">
                         <label class="control-label" for="title">Password</label>
                         <input  id="password" type="password" name="password" class="form-control"  placeholder="Post Title ..." value="{{ old('password', $mana_user->password) }}" disabled>
-                    </div>
+                    </div> --}}
                     <div class="form-group">
                         <label for="items_id">Role</label>
                             <select id="items_id" name="items_id" class="form-control" disabled>
