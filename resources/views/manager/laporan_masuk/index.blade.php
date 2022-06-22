@@ -7,7 +7,7 @@
     <div class="container-fluid">
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <!-- Search form -->
-        <form action="{{ url('search-lap-stok')}}" class="navbar-search navbar-search-light form-inline mr-sm-3" id="navbar-search-main" method="GET">
+        <form action="{{ url('search-lap-masuk')}}" class="navbar-search navbar-search-light form-inline mr-sm-3" id="navbar-search-main" method="GET">
         <div class="form-group mb-0">
             <div class="input-group input-group-alternative input-group-merge">
             <div class="input-group-prepend">
