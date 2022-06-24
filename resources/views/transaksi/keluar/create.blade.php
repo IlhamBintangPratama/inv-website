@@ -245,12 +245,13 @@
                                     }
                                 }
                                 function hanyaAngka(evt) {
-                                var charCode = (evt.which) ? evt.which : event.keyCode
-                                if (charCode > 31 && (charCode < 48 || charCode > 57))
-                        
-                                    return false;
-                                return true;
-                                }
+                                    var charCode = (evt.which) ? evt.which : event.keyCode
+                                    if (charCode == 46 || (charCode >= 48 && charCode <= 57))
+                                    
+                                    return true;
+                                        return false;
+                                    
+                                    }
                                 </script>
                                 {{-- <div class="form-group">
                                     <label for="jns_brg">Jenis:</label>

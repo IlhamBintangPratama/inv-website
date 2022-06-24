@@ -193,13 +193,14 @@
                                             }
                                         })
                                     }
-                                function hanyaAngka(evt) {
-                                var charCode = (evt.which) ? evt.which : event.keyCode
-                                if (charCode > 31 && (charCode < 48 || charCode > 57))
-                        
-                                    return false;
-                                return true;
-                                }
+                                    function hanyaAngka(evt) {
+                                    var charCode = (evt.which) ? evt.which : event.keyCode
+                                    if (charCode == 46 || (charCode >= 48 && charCode <= 57))
+                                    
+                                    return true;
+                                        return false;
+                                    
+                                    }
                                 </script>
                                 {{-- <div class="form-group">
                                         <label for="jns_brg">Jenis:</label>
@@ -212,7 +213,7 @@
                             </div> --}}
                             <div class="form-group">
                                 <label for="jumlah">QTY</label>
-                                <input class="form-control" name="jumlah" id="jumlah" onkeypress="return hanyaAngka(event)" type="number" style="height: 45px;"
+                                <input class="form-control" name="jumlah" id="jumlah" onkeypress="return hanyaAngka(event)" type="decimal" style="height: 45px;"
                                     autocomplete="off" multiple required='required'>
                             </div>
                             

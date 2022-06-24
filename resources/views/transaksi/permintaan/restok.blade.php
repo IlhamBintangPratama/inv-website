@@ -247,7 +247,7 @@
                         
                             <div class="form-group">
                                 <label for="jumlah">Jumlah (Kg)</label>
-                                <input class="form-control"  name="jumlah" id="jumlah" style="width: 180%" type="number" onkeypress="return hanyaAngka(event)" autocomplete="off" multiple>
+                                <input class="form-control"  name="jumlah" id="jumlah" style="width: 180%" type="decimal" onkeypress="return hanyaAngka(event)" autocomplete="off" multiple>
                                 {{-- <div id="awal_stoks"></div> --}}
                             </div>
                             <div class="form-group">
@@ -269,13 +269,13 @@
             <script>
                 
                 function hanyaAngka(evt) {
-                var charCode = (evt.which) ? evt.which : event.keyCode
-                if (charCode > 31 && (charCode < 48 || charCode > 57))
-        
-                    return false;
-                return true;
-                
-                }
+                        var charCode = (evt.which) ? evt.which : event.keyCode
+                        if (charCode == 46 || (charCode >= 48 && charCode <= 57))
+                        
+                        return true;
+                            return false;
+                        
+                        }
             </script>
         <div class="col-cok">
             <div class="row">
