@@ -21,7 +21,7 @@
                     <fieldset >
                         <div class="form-group">
                             <label for="items_id">Nama Barang</label>
-                                <select id="items_id" name="items_id" class="form-control" required='required'>
+                                <select id="items_id" name="items_id" class="form-control chosen-select" required='required'>
                                 <option value="">- pilih -</option>
                                 @foreach(App\Item::all() as $item) 
                                 <option value="{{$item->id}}">
@@ -56,6 +56,9 @@
             return true;
             
 		}
+        $(document).ready(function(){
+                    $('.chosen-select').chosen();
+                })
     </script>
 </div>
 @endsection ('content')

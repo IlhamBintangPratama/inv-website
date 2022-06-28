@@ -76,8 +76,8 @@
                                 <div class="form-group">
                                     <label for="suplier">Supplier</label>
                                     <div class="form-inline">
-                                        <select name="suplier" id="suplier" class="form-control" style="width: 79%" required='required'>
-                                            <option value="">- pilih -</option>
+                                        <select name="suplier" id="suplier" class="form-control chosen-select" style="width: 79%" required='required'>
+                                            <option value="" selected disabled>- pilih -</option>
                                             @foreach ($suplier as $supl)
                                             <option value="{{$supl->id}}">{{$supl->name}}</option>
                                             @endforeach
@@ -88,9 +88,9 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="nm_brg">Nama Barang</label>
-                                    <select name="nm_brg" id="nm_brg" class="form-control" required='required'
+                                    <select name="nm_brg" id="nm_brg" class="form-control chosen-select" required='required'
                                         onchange="updateBarangpurc(this);">
-                                        <option value="">- pilih -</option>
+                                        <option value="" selected disabled>- pilih -</option>
                                         @foreach ($awal as $stok)
                                         <option value="{{$stok->items_id}}">{{$stok->item->nm_brg}}</option>
                                         @endforeach
@@ -142,7 +142,7 @@
                                                 success: function (result) {
                                                     listTypes = result;
                                                     if (listTypes.length > 0) {
-                                                        var options = "<?php echo "<option selected>-pilih-</option>";?>";
+                                                        var options = "<?php echo "<option selected disabled>-pilih-</option>";?>";
                                                         listTypes.forEach(function (item) {
                                                             options +=
                                                                 "<option id='jenis_barang' value='" +
@@ -202,6 +202,9 @@
                                         return false;
                                     
                                     }
+                                    $(document).ready(function(){
+                                            $('.chosen-select').chosen();
+                                        })
                                 </script>
                                 {{-- <div class="form-group">
                                         <label for="jns_brg">Jenis:</label>

@@ -121,9 +121,9 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="nm_brg">Nama Barang</label>
-                                    <select name="nm_brg" id="nm_brg" class="form-control"
+                                    <select name="nm_brg" id="nm_brg" class="form-control chosen-select"
                                         onchange="updateBarang(this);">
-                                        <option value="">- pilih -</option>
+                                        <option value="" selected disabled>- pilih -</option>
                                         @foreach ($stokss as $stk)
                                         <option value="{{$stk->items_id}}">{{$stk->itemsss->nm_brg}}</option>
                                         @endforeach
@@ -180,7 +180,7 @@
                                                 listBarang=result;
                                                 
                                                 if(listBarang.length >= 1){
-                                                    var options="<?php echo "<option selected>-pilih-</option>";?>";
+                                                    var options="<?php echo "<option selected disabled>-pilih-</option>";?>";
                                                     // var test="<?php echo "<option>-pilih-</option>";?>"
                                                     listBarang.forEach(function(item){
                                                         options+=
@@ -258,7 +258,9 @@
                                         return false;
                                     
                                     }
-                                $("#nm_brg").chosen();
+                                    $(document).ready(function(){
+                                        $('.chosen-select').chosen();
+                                    })
                                 </script>
                                 {{-- <div class="form-group">
                                     <label for="jns_brg">Jenis:</label>

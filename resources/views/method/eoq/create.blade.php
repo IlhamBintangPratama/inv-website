@@ -90,7 +90,7 @@
                         <div class="form-group">
                             <label for="periode">Periode</label>
                             <select class="form-control mb-2"  name="periode" id="periode">
-                                <option value="">- pilih -</option>
+                                <option value="" selected disabled>- pilih -</option>
                                 <option value="90">3 Bulan</option>
                                 <option value="180">6 Bulan</option>
                                 <option value="360">12 Bulan</option>
@@ -98,9 +98,9 @@
                         </div>
                         <div class="form-group">
                             <label for="nm_brg">Nama Barang</label>
-                            <select name="nm_brg" id="nm_brg" class="form-control"
+                            <select name="nm_brg" id="nm_brg" class="form-control chosen-select"
                                 onchange="pickType(this);" required='required'>
-                                <option value="">- pilih -</option>
+                                <option value="" selected disabled>- pilih -</option>
                                 @foreach ($types as $type)
                                 <option value="{{$type->items_id}}">{{$type->itemsss->nm_brg}}</option>
                                     @endforeach
@@ -136,7 +136,7 @@
                                         success:function(result){
                                             listJeniss=result;
                                             if(listJeniss.length >= 1){
-                                                var options="";
+                                                var options="<?php echo "<option selected disabled>-pilih-</option>";?>";
                                                 listJeniss.forEach(function(item){
                                                     options+="<option value='"+item.id+"'>"+item.jns_brg+"</option>"
                                                 });
@@ -182,6 +182,9 @@
                                 return true;
                                 
                             }
+                            $(document).ready(function(){
+                                        $('.chosen-select').chosen();
+                                    })
                         </script>
                         <div class="form-group">
                             

@@ -84,7 +84,7 @@
                     <fieldset >
                         <div class="form-group">
                             <label for="nm_brg">Nama Barang</label>
-                            <select name="nm_brg" id="nm_brg" class="form-control"
+                            <select name="nm_brg" id="nm_brg" class="form-control chosen-select"
                                 onchange="updateItems(this);" required='required'>
                                 <option value="">- pilih -</option>
                                 @foreach ($stokss as $stoks)
@@ -154,6 +154,9 @@
                             return false;
                         
                         }
+                        $(document).ready(function(){
+                            $('.chosen-select').chosen();
+                        })
                         </script>
                         {{-- <div class="form-group">
                             <label for="stok">Jumlah Stok (Kg)</label>
@@ -169,8 +172,6 @@
                         <a href="{{ url('stok') }}" class="btn btn-default">Back</a>
                     </fieldset>
                 </form>
-
-
             </div>
         </div>
     </div>
@@ -178,6 +179,8 @@
 @include('sweetalert::alert')
 
 @endsection ('content')
+@section('footer.script')
+@endsection
 
 
 
