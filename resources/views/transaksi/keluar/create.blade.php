@@ -133,6 +133,8 @@
                                     <label for="jns_brg">Jenis</label>
                                     <select class='form-control' name='jns_brg' required='required' id='input-barang'
                                         onchange="getStock(this)">
+                                        <option value="">- pilih -</option>
+
                                     </select>
 
                                     <span class="help-block" id='input-barang-status' style="display:none;">
@@ -176,13 +178,17 @@
                                             },
                                             success:function(result){
                                                 listBarang=result;
+                                                
                                                 if(listBarang.length >= 1){
-                                                    var options="";
+                                                    var options="<?php echo "<option selected>-pilih-</option>";?>";
+                                                    // var test="<?php echo "<option>-pilih-</option>";?>"
                                                     listBarang.forEach(function(item){
-                                                        options+="<option id='jenis_barang' value='" +
+                                                        options+=
+                                                                "<option id='jenis_barang' value='" +
                                                                 item.types_id + "'>" + item
                                                                 .jns_brg + "</option>"
                                                     });
+                                                    // $('#input-barang').html(test).show();
                                                     $('#input-barang').html(options).show();
                                                     $('#input-barang-status').hide();
                                                 }else{
@@ -205,7 +211,7 @@
                                 }
                                 function getStock(jenis){
                                         $.ajax({
-                                            url : 'listbarang/' + $('#nm_brg').val(),
+                                            url : 'listbarang/' + $('#jenis_barang').val(),
                                             type : 'GET',
                                             dataType : 'json',
                                             success : function(data){
@@ -252,6 +258,7 @@
                                         return false;
                                     
                                     }
+                                $("#nm_brg").chosen();
                                 </script>
                                 {{-- <div class="form-group">
                                     <label for="jns_brg">Jenis:</label>
@@ -309,7 +316,6 @@
 
             </div>
         </div>
-
         <script>
             function tambah_row() {
                 let elListCheckout = $('#list-Checkout');

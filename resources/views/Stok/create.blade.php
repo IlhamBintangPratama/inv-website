@@ -94,8 +94,9 @@
                         </div>
                         <div class="form-group">
                             <label for="jns_brg">Jenis</label>
-                            <select class='form-control' name='jns_brg' required='required' id='input-barang'
-                                style="display:none;">
+                            <select class='form-control' name='jns_brg' required='required' id='input-barang'>
+                                <option value="">- pilih -</option>
+
                             </select>
 
                             <span class="help-block" id='input-barang-status' style="display:none;">
@@ -122,7 +123,7 @@
                                     success:function(result){
                                         listBarang=result;
                                         if(listBarang.length >= 1){
-                                            var options="";
+                                            var options="<?php echo "<option selected>-pilih-</option>";?>";
                                             listBarang.forEach(function(item){
                                                 options+="<option value='"+item.id+"'>"+item.jns_brg+"</option>"
                                             });

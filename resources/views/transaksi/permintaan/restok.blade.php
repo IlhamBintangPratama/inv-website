@@ -7,19 +7,7 @@
     <div class="container-fluid">
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <!-- Search form -->
-        <form action="{{ url('search-outstok')}}" class="navbar-search navbar-search-light form-inline mr-sm-3" id="navbar-search-main" method="GET">
-            <div class="form-group mb-0">
-            <div class="input-group input-group-alternative input-group-merge">
-                <div class="input-group-prepend">
-                <span class="input-group-text"><i class="fas fa-search"></i></span>
-                </div>
-                <input name="keyword" class="form-control" placeholder="Cari berdasarkan nama" type="text">
-            </div>
-            </div>
-            {{-- <button type="submit" class="btn btn-primary mb-2" data-target="#navbar-search-main" aria-label="Close">
-            
-            </button> --}}
-        </form>
+        
         <!-- Navbar links -->
         <ul class="navbar-nav align-items-center  ml-md-auto ">
             <li class="nav-item d-xl-none">

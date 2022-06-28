@@ -100,6 +100,7 @@
                                     <label for="jns_brg">Jenis</label>
                                     <select class='form-control' name='jns_brg' required='required' id='inp-jns' required='required'
                                         onchange="getStock(this)">
+                                        <option value="">- pilih -</option>
                                     </select>
                                     {{-- <label for="jns_brg">Jenis</label>
                                         <select id="jenis" name="jenis" class="form-control" style="display:none;">
@@ -141,7 +142,7 @@
                                                 success: function (result) {
                                                     listTypes = result;
                                                     if (listTypes.length > 0) {
-                                                        var options = "";
+                                                        var options = "<?php echo "<option selected>-pilih-</option>";?>";
                                                         listTypes.forEach(function (item) {
                                                             options +=
                                                                 "<option id='jenis_barang' value='" +

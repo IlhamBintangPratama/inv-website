@@ -359,7 +359,9 @@ class OutController extends Controller
         $barang = $barang->select('stoks.id','types_id','stok','types.jns_brg','hrg_jual')
                         ->where('stoks.items_id','=',$items_id)
                         ->join('types', 'types_id' , '=', 'types.id');
+        
         return response()->json($barang->get());
+        
     }
     public function predik()
     {
