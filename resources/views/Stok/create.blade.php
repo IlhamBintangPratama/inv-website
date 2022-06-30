@@ -86,7 +86,7 @@
                             <label for="nm_brg">Nama Barang</label>
                             <select name="nm_brg" id="nm_brg" class="form-control chosen-select"
                                 onchange="updateItems(this);" required='required'>
-                                <option value="">- pilih -</option>
+                                <option value="" selected disabled>- pilih -</option>
                                 @foreach ($stokss as $stoks)
                                 <option value="{{$stoks->items_id}}">{{$stoks->itemsss->nm_brg}}</option>
                                     @endforeach
@@ -123,7 +123,7 @@
                                     success:function(result){
                                         listBarang=result;
                                         if(listBarang.length >= 1){
-                                            var options="<?php echo "<option selected>-pilih-</option>";?>";
+                                            var options="<?php echo "<option selected disabled>-pilih-</option>";?>";
                                             listBarang.forEach(function(item){
                                                 options+="<option value='"+item.id+"'>"+item.jns_brg+"</option>"
                                             });

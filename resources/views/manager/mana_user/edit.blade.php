@@ -77,7 +77,7 @@
                     <fieldset >
                         <div class="form-group" {{ $errors->has('nm_user') ? 'has-error' : '' }}>
                             <label for="nm_user">Nama Lengkap</label>
-                            <input class="form-control"  name="nm_user" id="nm_user" type="text" placeholder="Nama Lengkap" value="{{ old('name', $mana_user->name) }}" autocomplete="off" required='required'>
+                            <input class="form-control"  name="nm_user" id="nm_user" type="text" placeholder="Nama Lengkap" onkeypress="return hanyaHuruf(event)" value="{{ old('name', $mana_user->name) }}" autocomplete="off" required='required'>
                         </div>
                     
                         <div class="form-group" {{ $errors->has('email') ? 'has-error' : '' }}>
@@ -95,8 +95,7 @@
                                 
                                 <option  value="{{ old('level', $mana_user->level) }}" selected>
     
-                                {{$mana_user->level}}
-    
+                                {{($mana_user->level == 1) ? 'Staff Gudang' : 'Staff Purchasing'}}
                                 </option>
                                 
                                 </select>
@@ -113,9 +112,17 @@
                         </div>
                     </fieldset>
                 </form>
-
-
             </div>
+            <script>
+                function hanyaHuruf(evt) {
+                var charCode = (evt.which) ? evt.which : event.keyCode
+                if (charCode > 31 && (charCode < 48 || charCode > 57))
+        
+                    return true
+                return false;
+                ;
+		        }
+            </script>
         </div>
     </div>
 </div>

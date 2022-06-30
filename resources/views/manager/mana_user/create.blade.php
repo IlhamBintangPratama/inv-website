@@ -78,7 +78,7 @@
                     <fieldset >
                         <div class="form-group">
                             <label for="nm_user">Nama Lengkap</label>
-                            <input class="form-control @error('nm_user') is-invalid @enderror"  name="nm_user" id="nm_user" type="text" placeholder="Nama Lengkap" autocomplete="off" required='required'>
+                            <input class="form-control @error('nm_user') is-invalid @enderror" onkeypress="return hanyaHuruf(event)" name="nm_user" id="nm_user" type="text" placeholder="Nama Lengkap" autocomplete="off" required='required'>
                             @error('nm_user')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -101,18 +101,26 @@
                         <div class="form-group">
                             <label for="periode">Role</label>
                             <select class="form-control"  name="role" id="role" required='required'>
-                                <option value="">- pilih -</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
+                                <option value="" selected disabled>- pilih -</option>
+                                <option value="1">Staff Gudang</option>
+                                <option value="2">Staff Purchasing</option>
                             </select>
                         <button type="submit" class="btn btn-success mt-4">Save</button>
 
                         <a href="{{ url('mana_user') }}" class="btn btn-default mt-4">Back</a>
                     </fieldset>
                 </form>
-
-
             </div>
+            <script>
+                function hanyaHuruf(evt) {
+                var charCode = (evt.which) ? evt.which : event.keyCode
+                if (charCode > 31 && (charCode < 48 || charCode > 57))
+        
+                    return true
+                return false;
+                ;
+		        }
+            </script>
         </div>
     </div>
 </div>

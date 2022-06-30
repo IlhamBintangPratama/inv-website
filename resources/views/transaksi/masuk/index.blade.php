@@ -113,6 +113,7 @@
                     <th scope="col" class="sort" data-sort="name">QTY</th>
                     <th scope="col" class="sort" data-sort="name">Tanggal</th>
                     <th scope="col" class="sort" data-sort="name">Harga Item</th>
+                    <th scope="col" class="sort" data-sort="name">Action</th>
                   </tr>
                 </thead>
                 <tbody class="list">
